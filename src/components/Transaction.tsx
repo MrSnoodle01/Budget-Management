@@ -7,6 +7,7 @@ interface TransactionProps {
     categoryType?: string;
     subCategoryType?: string;
     amount: number;
+    date: string;
 }
 
 export default function Transaction(transaction: TransactionProps) {
@@ -51,6 +52,11 @@ export default function Transaction(transaction: TransactionProps) {
             <div style={{ flex: "1" }}>
                 <p style={{ color: "black" }}>
                     {transaction.amount}
+                </p>
+            </div>
+            <div style={{ flex: "1" }}>
+                <p style={{ color: "black" }}>
+                    {transaction.date}
                 </p>
             </div>
         </div>

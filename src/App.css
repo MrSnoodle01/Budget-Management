@@ -5,6 +5,22 @@
   text-align: center;
 }
 
+.right-col {
+  width: 30vw;
+  height: 30vh;
+  display: flex;
+  right: 0px;
+  position: absolute;
+  top: 37.5%;
+}
+
+.middle-section {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 10px;
+}
+
 .input-container {
   display: flex;
   gap: 2.5px;
@@ -19,5 +35,6 @@
   border: 1px solid;
   border-radius: 50px;
   border-color: transparent;
-  margin: 1px 0px
+  margin: 1px 0px;
+  width: 40vw;
 }

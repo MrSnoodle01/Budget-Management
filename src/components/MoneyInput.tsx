@@ -6,11 +6,11 @@ import { useState } from "react"
     category(string): food/transportation/insurance/new custom category
     subcategory(string): food --> groceries/restaraunts/new custom subcategory
     cost amount(float): 
+    Date(string):
 */
 
 /*TODO: add cusom input stuff
-        make paycheck only show up on income
-
+        add edit/delete
 */
 export default function MoneyInput() {
     const [selectColor, setSelectColor] = useState('#6d6d6dff');
@@ -82,6 +82,7 @@ export default function MoneyInput() {
             </select>
             {options()}
             <input type='number' placeholder="Amount" style={{ background: selectColor, color: 'black' }} />
+            <input type='date' style={{ background: selectColor, color: 'black' }} />
         </div >
     );
 }
