@@ -51,7 +51,7 @@ export default function Transaction(transaction: TransactionProps) {
             </div>
             <div style={{ flex: "1" }}>
                 <p style={{ color: "black" }}>
-                    {transaction.amount}
+                    ${transaction.amount.toFixed(2)}
                 </p>
             </div>
             <div style={{ flex: "1" }}>
