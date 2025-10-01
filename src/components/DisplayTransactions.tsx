@@ -7,7 +7,7 @@ type DisplayTransactionsProps = {
 
 const DisplayTransactions: React.FC<DisplayTransactionsProps> = ({ dateSelection }) => {
     return (
-        <div>
+        <div className='transaction-display'>
             {tempData.map((transaction) => {
                 if (dateSelection === "") {
                     return <Transaction key={transaction.id} {...transaction} />

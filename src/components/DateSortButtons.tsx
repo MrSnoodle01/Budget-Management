@@ -19,7 +19,6 @@ const DateSortButtons: React.FC<DateSortButtonsProps> = ({ onDateSelectionChange
 
             let fullDate = monthName + " " + year;
 
-            console.log(fullDate);
             if (!tempMonths.includes(fullDate)) {
                 tempMonths.push(fullDate)
             }
@@ -30,9 +29,9 @@ const DateSortButtons: React.FC<DateSortButtonsProps> = ({ onDateSelectionChange
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1px' }}>
-            <button>Show all months</button>
+            <button onClick={(() => onDateSelectionChange(""))}>Show all months</button>
             {months.map((e) => (
-                <button onClick={(() => onDateSelectionChange(e))}>{e}</button>
+                <button key={e} onClick={(() => onDateSelectionChange(e))}>{e}</button>
             ))}
         </div>
     )

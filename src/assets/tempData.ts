@@ -2,56 +2,117 @@ export const tempData = [{
     id: 0,
     transactionType: "Income",
     transactionCategory: "Paycheck",
-    amount: 506.68,
-    date: "9/29/25"
+    amount: 400.11,
+    date: "9/5/25"
 }, {
     id: 1,
     transactionType: "Expense",
-    transactionCategory: "Needs",
-    categoryType: "Food",
-    subCategoryType: "Groceries",
-    amount: 10.99,
-    date: "9/28/25"
+    transactionCategory: "Want",
+    categoryType: "Climbing",
+    subCategoryType: "Headlamp",
+    amount: 60.74,
+    date: "9/5/25"
 }, {
     id: 2,
-    transactionType: "Income",
-    transactionCategory: "Gifts",
-    amount: 20.00,
-    date: "9/26/25"
+    transactionType: "Expense",
+    transactionCategory: "Want",
+    categoryType: "Games",
+    amount: 19.99,
+    date: "9/8/25"
 }, {
     id: 3,
     transactionType: "Expense",
-    transactionCategory: "Wants",
-    categoryType: "Technology",
-    subCategoryType: "Games",
-    amount: 15.00,
-    date: "9/26/25"
+    transactionCategory: "Want",
+    categoryType: "Gift",
+    amount: 11.37,
+    date: "9/10/25"
 }, {
     id: 4,
-    transactionType: "Income",
-    transactionCategory: "Paycheck",
-    amount: 501.68,
-    date: "8/15/25"
+    transactionType: "Expense",
+    transactionCategory: "Need",
+    categoryType: "Food",
+    subCategoryType: "Restaraunt",
+    amount: 21.33,
+    date: "9/10/25"
 }, {
     id: 5,
     transactionType: "Expense",
-    transactionCategory: "Needs",
-    categoryType: "Food",
-    subCategoryType: "Groceries",
-    amount: 101.68,
-    date: "8/13/25"
+    transactionCategory: "Need",
+    categoryType: "Transportation",
+    subCategoryType: "Gas",
+    amount: 56.37,
+    date: "9/11/25"
 }, {
     id: 6,
-    transactionType: "Income",
-    transactionCategory: "Gifts",
-    amount: 100.00,
-    date: "8/11/25"
+    transactionType: "Expense",
+    transactionCategory: "Want",
+    categoryType: "Climbing",
+    subCategoryType: "Membership",
+    amount: 68.00,
+    date: "9/16/25"
 }, {
     id: 7,
+    transactionType: "Income",
+    transactionCategory: "Paycheck",
+    amount: 515.55,
+    date: "9/19/25"
+}, {
+    id: 8,
+    transactionType: "Income",
+    transactionCategory: "Random",
+    amount: 3.00,
+    date: "9/19/25"
+}, {
+    id: 9,
     transactionType: "Expense",
-    transactionCategory: "Wants",
-    categoryType: "Technology",
-    subCategoryType: "Games",
-    amount: 60.00,
-    date: "7/19/25"
+    transactionCategory: "Want",
+    categoryType: "Going Out",
+    subCategoryType: "Trivia",
+    amount: 10.00,
+    date: "9/22/25"
+}, {
+    id: 10,
+    transactionType: "Expense",
+    transactionCategory: "Need",
+    categoryType: "Transportation",
+    subCategoryType: "Gas",
+    amount: 57.06,
+    date: "9/24/25"
+}, {
+    id: 11,
+    transactionType: "Expense",
+    transactionCategory: "Need",
+    categoryType: "Food",
+    subCategoryType: "Restaraunt",
+    amount: 18.80,
+    date: "9/25/25"
+}, {
+    id: 12,
+    transactionType: "Expense",
+    transactionCategory: "Want",
+    categoryType: "Magic the Gathering",
+    amount: 101.30,
+    date: "9/29/25"
+}, {
+    id: 13,
+    transactionType: "Expense",
+    transactionCategory: "Want",
+    categoryType: "Climbing",
+    subCategoryType: "Chalk",
+    amount: 18.37,
+    date: "9/16/25"
+}, {
+    id: 100,
+    transactionType: "Expense",
+    transactionCategory: "Want",
+    categoryType: "test",
+    amount: 10.00,
+    date: "8/1/25"
+}, {
+    id: 101,
+    transactionType: "Expense",
+    transactionCategory: "Need",
+    categoryType: "test2",
+    amount: 20.00,
+    date: "8/1/25"
 },]
