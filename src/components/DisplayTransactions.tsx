@@ -6,9 +6,15 @@ type DisplayTransactionsProps = {
 }
 
 const DisplayTransactions: React.FC<DisplayTransactionsProps> = ({ dateSelection }) => {
+    const sortedData = [...tempData].sort((a, b) => {
+        const dateA = new Date(a.date).getTime();
+        const dateB = new Date(b.date).getTime();
+        return dateB - dateA;
+    })
+
     return (
         <div className='transaction-display'>
-            {tempData.map((transaction) => {
+            {sortedData.map((transaction) => {
                 if (dateSelection === "") {
                     return <Transaction key={transaction.id} {...transaction} />
                 }

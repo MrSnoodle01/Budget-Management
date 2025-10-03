@@ -5,6 +5,22 @@ type DateSortButtonsProps = {
     onDateSelectionChange: (option: string) => void;
 }
 
+const monthMap: Record<string, number> = {
+    January: 0,
+    February: 1,
+    March: 2,
+    April: 3,
+    May: 4,
+    June: 5,
+    July: 6,
+    August: 7,
+    September: 8,
+    October: 9,
+    November: 10,
+    December: 11,
+};
+
+
 const DateSortButtons: React.FC<DateSortButtonsProps> = ({ onDateSelectionChange }) => {
     const [months, setMonths] = useState<string[]>([]);
 
@@ -22,9 +38,17 @@ const DateSortButtons: React.FC<DateSortButtonsProps> = ({ onDateSelectionChange
             if (!tempMonths.includes(fullDate)) {
                 tempMonths.push(fullDate)
             }
-
-            setMonths(tempMonths);
         })
+
+        const sortedDates = [...tempMonths].sort((a, b) => {
+            const [monthA, yearA] = a.split(" ");
+            const [monthB, yearB] = b.split(" ");
+            const dateA = new Date(Number(yearA), monthMap[monthA]);
+            const dateB = new Date(Number(yearB), monthMap[monthB]);
+            return dateB.getTime() - dateA.getTime();
+        })
+
+        setMonths(sortedDates);
     }, [])
 
     return (

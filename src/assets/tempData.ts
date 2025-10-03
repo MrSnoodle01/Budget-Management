@@ -102,6 +102,20 @@ export const tempData = [{
     amount: 18.37,
     date: "9/16/25"
 }, {
+    id: 14,
+    transactionType: "Income",
+    transactionCategory: "Paycheck",
+    amount: 523.39,
+    date: "10/3/25"
+}, {
+    id: 15,
+    transactionType: "Expense",
+    transactionCategory: "Need",
+    categoryType: "Food",
+    subCategoryType: "Restaurant",
+    amount: 20.90,
+    date: "10/1/25"
+}, {
     id: 100,
     transactionType: "Expense",
     transactionCategory: "Want",

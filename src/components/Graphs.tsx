@@ -65,7 +65,7 @@ const Graphs: React.FC<GraphsProps> = ({ dateSelection }) => {
                 width={350}
                 height={350}
             />
-            <p>Spending for {dateSelection}</p>
+            <p>Spending for {dateSelection ? dateSelection : "all dates"}</p>
             {income > 0
                 ?
                 <PieChart
