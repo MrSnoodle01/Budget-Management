@@ -72,7 +72,7 @@ const Graphs: React.FC<GraphsProps> = ({ dateSelection }) => {
                     series={[
                         {
                             arcLabel: (item) => `${item.id} ${item.value}%`,
-                            arcLabelMinAngle: 35,
+                            arcLabelMinAngle: 10,
                             arcLabelRadius: '50%',
                             data: [
                                 { id: 'Needs', value: parseFloat((needs / income * 100).toFixed(2)), color: 'green' },
@@ -90,7 +90,7 @@ const Graphs: React.FC<GraphsProps> = ({ dateSelection }) => {
                     series={[
                         {
                             arcLabel: (item) => `${item.id} $${item.value}`,
-                            arcLabelMinAngle: 35,
+                            arcLabelMinAngle: 10,
                             arcLabelRadius: '50%',
                             data: [
                                 { id: 'Needs', value: parseFloat((needs).toFixed(2)), color: 'green' },
@@ -103,6 +103,9 @@ const Graphs: React.FC<GraphsProps> = ({ dateSelection }) => {
                     height={350}
                 />
             }
+            <p>
+                Needs: ${parseFloat((needs).toFixed(2))} Wants: ${parseFloat((wants).toFixed(2))} Savings: ${parseFloat((savings).toFixed(2))} Extra: ${parseFloat(((income - needs - wants)).toFixed(2))}
+            </p>
         </div>
     )
 }
