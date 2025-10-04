@@ -54,12 +54,13 @@ class User(Resource):
 
     @marshal_with(userFields)
     def patch(self, id):
-        args = user_args.parse_args()
+        data = request.get_json()
         user = UserModel.query.filter_by(id=id).first()
         if not user:
             abort(404, "User not found")
-        user.userName = args["userName"]
-        user.email = args["email"]
+        user.userName = data["userName"]
+        user.email = data["email"]
+        user.transactions = data["transactions"]
         db.session.commit()
         return user
 
