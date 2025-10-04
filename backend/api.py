@@ -49,7 +49,7 @@ class User(Resource):
     def get(self, id):
         user = UserModel.query.filter_by(id=id).first()
         if not user:
-            abort(404, "User not found")
+            abort(404, message="User not found")
         return user
 
     @marshal_with(userFields)
@@ -57,7 +57,7 @@ class User(Resource):
         data = request.get_json()
         user = UserModel.query.filter_by(id=id).first()
         if not user:
-            abort(404, "User not found")
+            abort(404, message="User not found")
         user.userName = data["userName"]
         user.email = data["email"]
         user.transactions = data["transactions"]
@@ -68,14 +68,26 @@ class User(Resource):
     def delete(self, id):
         user = UserModel.query.filter_by(id=id).first()
         if not user:
-            abort(404, "User not found")
+            abort(404, message="User not found")
         db.session.delete(user)
         db.session.commit()
         users = UserModel.query.all()
         return users, 201
 
+class addTransaction(Resource):
+    @marshal_with(userFields)
+    def patch(self, id):
+        data = request.get_json()
+        user = UserModel.query.filter_by(id=id).first()
+        if not user:
+            abort(404, message="User not found")
+        user.transactions = user.transactions + data["transactions"]
+        db.session.commit()
+        return user
+
 api.add_resource(User, '/api/users/<int:id>')
 api.add_resource(Users, '/api/users/')
+api.add_resource(addTransaction, '/api/addTransaction/<int:id>')
 
 @app.route('/')
 def home():
