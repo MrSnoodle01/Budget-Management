@@ -1,6 +1,7 @@
-from flask import Flask
+from flask import Flask, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_restful import Resource, Api, reqparse, fields, marshal_with, abort
+from sqlalchemy.types import JSON
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
@@ -11,19 +12,17 @@ class UserModel(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     userName = db.Column(db.String(80), unique=True, nullable=False)
     email = db.Column(db.String(80), unique=True, nullable=False)
+    transactions = db.Column(JSON)
 
     def __repr__(self):
         return f"User(userName = {self.userName}, email = {self.email})"
 
 
-user_args = reqparse.RequestParser()
-user_args.add_argument('userName', type=str, required=True, help='userName cannot be blank')
-user_args.add_argument('email', type=str, required=True, help='Email cannot be blank')
-
 userFields = {
     'id': fields.Integer, 
     'userName': fields.String,
     'email': fields.String,
+    'transactions': fields.Raw,
 }
 
 class Users(Resource):
@@ -34,8 +33,12 @@ class Users(Resource):
 
     @marshal_with(userFields)
     def post(self):
-        args = user_args.parse_args()
-        user = UserModel(userName=args["userName"], email=args["email"])
+        data = request.get_json()
+        user = UserModel(
+            userName=data["userName"],
+            email=data["email"],
+            transactions=data.get("transactions", [])
+        )
         db.session.add(user)
         db.session.commit()
         users = UserModel.query.all()
