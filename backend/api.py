@@ -85,9 +85,19 @@ class addTransaction(Resource):
         db.session.commit()
         return user
 
+class getUserTransactions(Resource):
+    @marshal_with(userFields)
+    def get(self, id):
+        user = UserModel.query.filter_by(id=id).first()
+        if not user:
+            abort(404, message="User not found")
+        return user
+
 api.add_resource(User, '/api/users/<int:id>')
 api.add_resource(Users, '/api/users/')
 api.add_resource(addTransaction, '/api/addTransaction/<int:id>')
+api.add_resource(getUserTransactions, '/api/getUserTransactions/<int:id>')
+
 
 @app.route('/')
 def home():

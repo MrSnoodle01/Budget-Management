@@ -1,8 +1,18 @@
-import { tempData } from "../assets/tempData"
 import React, { useState, useEffect } from 'react';
+
+type TransactionType = {
+    id: number;
+    transactionType: string;
+    transactionCategory?: string;
+    categoryType?: string;
+    subCategoryType?: string;
+    amount: number;
+    date: string;
+}
 
 type DateSortButtonsProps = {
     onDateSelectionChange: (option: string) => void;
+    transactions: TransactionType[];
 }
 
 const monthMap: Record<string, number> = {
@@ -21,13 +31,13 @@ const monthMap: Record<string, number> = {
 };
 
 
-const DateSortButtons: React.FC<DateSortButtonsProps> = ({ onDateSelectionChange }) => {
+const DateSortButtons: React.FC<DateSortButtonsProps> = ({ onDateSelectionChange, transactions }) => {
     const [months, setMonths] = useState<string[]>([]);
 
     useEffect(() => {
         let tempMonths: string[] = [];
 
-        tempData.forEach(e => {
+        transactions.forEach(e => {
             let dateObject = new Date(e.date);
 
             let monthName = dateObject.toLocaleString('default', { month: 'long' });
@@ -49,7 +59,7 @@ const DateSortButtons: React.FC<DateSortButtonsProps> = ({ onDateSelectionChange
         })
 
         setMonths(sortedDates);
-    }, [])
+    }, [onDateSelectionChange, transactions])
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1px' }}>

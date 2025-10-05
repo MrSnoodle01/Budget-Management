@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 interface TransactionProps {
     id: number;
     transactionType: string;
-    transactionCategory: string;
+    transactionCategory?: string;
     categoryType?: string;
     subCategoryType?: string;
     amount: number;

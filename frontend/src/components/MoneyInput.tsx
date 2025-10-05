@@ -1,24 +1,31 @@
 import { useState } from "react"
 
-/* 
-    type of input(string): income/expense/savings/investing/new custom input
-    category of input(string): wants/needs/paycheck/new custom input
-    category(string): food/transportation/insurance/new custom category
-    subcategory(string): food --> groceries/restaraunts/new custom subcategory
-    cost amount(float): 
-    Date(string):
-*/
+type TransactionType = {
+    id: number;
+    transactionType: string;
+    transactionCategory?: string;
+    categoryType?: string;
+    subCategoryType?: string;
+    amount: number;
+    date: string;
+}
 
-/*TODO: add cusom input stuff
+type MoneyInputProps = {
+    onAddTransaction: (option: TransactionType[]) => void;
+}
+
+/*TODO: 
         add edit/delete
 */
-export default function MoneyInput() {
+const MoneyInput: React.FC<MoneyInputProps> = ({ onAddTransaction }) => {
+    // export default function MoneyInput() {
     const [selectColor, setSelectColor] = useState('#6d6d6dff');
     const [transactionType, setTransactionType] = useState('');
     const [transactionCategory, setTransactionCategory] = useState('');
     const [categoryType, setCategoryType] = useState('');
     const [subCategoryType, setSubCategoryType] = useState('');
     const [amount, setAmount] = useState(0);
+    const [date, setDate] = useState("");
 
     function handleTransactionTypeChange(e: React.ChangeEvent<HTMLSelectElement>) {
         const value = e.target.value;
@@ -32,11 +39,24 @@ export default function MoneyInput() {
         }
     }
 
+    function handleDateChange(e: React.ChangeEvent<HTMLInputElement>) {
+        let newDate = new Date(e.target.value + "T00:00:00");
+        const options: Intl.DateTimeFormatOptions = {
+            year: "2-digit",
+            month: 'numeric',
+            day: 'numeric',
+        }
+        setDate(newDate.toLocaleDateString('en-US', options))
+    }
+
     function options() {
         switch (transactionType) {
             case 'Income':
                 return (
-                    <select style={{ background: selectColor, color: 'black' }}>
+                    <select
+                        style={{ background: selectColor, color: 'black' }}
+                        onChange={e => setTransactionCategory(e.target.value)}
+                    >
                         <option>--Choose category of income--</option>
                         <option>Paycheck</option>
                         <option>Bonus</option>
@@ -81,7 +101,7 @@ export default function MoneyInput() {
 
     function addTransaction() {
         let dateId = new Date()
-        fetch('/api/addTransaction/2', {
+        fetch('/api/addTransaction/3', {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
@@ -94,7 +114,7 @@ export default function MoneyInput() {
                     categoryType: categoryType,
                     subCategoryType: subCategoryType,
                     amount: amount,
-                    date: dateId.toLocaleDateString(),
+                    date: date,
                 }]
             })
         }).then(res => {
@@ -103,7 +123,7 @@ export default function MoneyInput() {
             }
             return res.json();
         }).then(updatedUser => {
-            console.log("updated user: ", updatedUser)
+            onAddTransaction(updatedUser.transactions);
         }).catch(error => {
             console.error("Error updating resource: ", error);
         })
@@ -130,8 +150,14 @@ export default function MoneyInput() {
                 style={{ background: selectColor, color: 'black' }}
                 onChange={e => setAmount(Number(e.target.value))}
             />
-            <input type='date' style={{ background: selectColor, color: 'black' }} />
+            <input
+                type='date'
+                style={{ background: selectColor, color: 'black' }}
+                onChange={handleDateChange}
+            />
             <button onClick={addTransaction}>Submit</button>
         </div >
     );
 }
+
+export default MoneyInput;
