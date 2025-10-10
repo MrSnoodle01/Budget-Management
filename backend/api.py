@@ -88,9 +88,14 @@ class addTransaction(Resource):
 class getUserTransactions(Resource):
     @marshal_with(userFields)
     def get(self, id):
+        filterValue = request.args.get('filter', default=None, type=str)
+
         user = UserModel.query.filter_by(id=id).first()
         if not user:
             abort(404, message="User not found")
+
+        if filterValue and filterValue != 'All':
+            user = user.filter.filter_by(type=filtervalue)
         return user
 
 api.add_resource(User, '/api/users/<int:id>')

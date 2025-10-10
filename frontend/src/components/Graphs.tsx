@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 type GraphsProps = {
     dateSelection: string;
     transactions: TransactionType[];
+    filter: string;
 }
 
 type TransactionType = {
@@ -16,7 +17,7 @@ type TransactionType = {
     date: string;
 }
 
-const Graphs: React.FC<GraphsProps> = ({ dateSelection, transactions }) => {
+const Graphs: React.FC<GraphsProps> = ({ dateSelection, transactions, filter }) => {
     const [wants, setWants] = useState(0);
     const [needs, setNeeds] = useState(0);
     const [savings, setSavings] = useState(0);
@@ -37,6 +38,7 @@ const Graphs: React.FC<GraphsProps> = ({ dateSelection, transactions }) => {
             let transactionMonthName = transactionDate.toLocaleString('default', { month: 'long' });
             let transactionYear = transactionDate.getFullYear();
 
+            // if (filter === "All") {
             if ((transactionMonthName === dateMonth && String(transactionYear) === dateYear) || dateSelection === "") {
                 if (e.transactionCategory === "Wants") {
                     tempWants += e.amount;
@@ -48,6 +50,23 @@ const Graphs: React.FC<GraphsProps> = ({ dateSelection, transactions }) => {
                     tempIncome += e.amount;
                 }
             }
+            // } else {
+            //     const hasFilter = Object.values(e).some(value => String(value) === filter);
+            //     if (((transactionMonthName === dateMonth && String(transactionYear) === dateYear) || dateSelection) === "" && hasFilter) {
+            //         if ((transactionMonthName === dateMonth && String(transactionYear) === dateYear) || dateSelection === "") {
+            //             if (e.transactionCategory === "Wants") {
+            //                 tempWants += e.amount;
+            //             } else if (e.transactionCategory === "Needs") {
+            //                 tempNeeds += e.amount;
+            //             } else if (e.transactionType === "Savings") {
+            //                 tempSavings += e.amount;
+            //             } else if (e.transactionType === "Income") {
+            //                 tempIncome += e.amount;
+            //             }
+            //         }
+            //     }
+            // }
+
         });
 
         setWants(parseFloat(tempWants.toFixed(2)));
