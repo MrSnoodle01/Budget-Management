@@ -111,16 +111,41 @@ class deleteTransaction(Resource):
             abort(400, message="Transaction ID is required")
 
         user.transactions = [t for t in user.transactions if t['id'] != transactionId]
-
         db.session.commit()
+        return user
 
-        return user, 200
+class editTransaction(Resource):
+    @marshal_with(userFields)
+    def patch(self, id):
+        user = UserModel.query.filter_by(id=id).first()
+        transactionId = request.args.get('transactionId', default=None, type=int)
+        data = request.get_json()
+
+        if not user:
+            abort(404, message="User not found")
+        if transactionId is None:
+            abort(400, message="Transaction ID is required")
+        
+        transactions = user.transactions.copy() if user.transactions else []
+
+        for i, transaction in enumerate(transactions):
+            if transaction.get("id") == transactionId:
+                transactions[i] = {**transaction, **data}
+                break
+
+        # print(transactions)
+        print(data)
+
+        user.transactions = transactions
+        db.session.commit()
+        return user
 
 api.add_resource(User, '/api/users/<int:id>')
 api.add_resource(Users, '/api/users/')
 api.add_resource(addTransaction, '/api/addTransaction/<int:id>')
 api.add_resource(getUserTransactions, '/api/getUserTransactions/<int:id>')
 api.add_resource(deleteTransaction, '/api/deleteTransaction/<int:id>')
+api.add_resource(editTransaction, '/api/editTransaction/<int:id>')
 
 
 @app.route('/')

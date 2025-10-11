@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
 type TransactionType = {
     id: number;
@@ -11,14 +11,12 @@ type TransactionType = {
 }
 
 type MoneyInputProps = {
-    onChangeTransaction: (option: TransactionType[]) => void;
+    onChangeTransaction?: (option: TransactionType[]) => void;
+    isEditing?: boolean;
+    editedTransaction?: TransactionType;
 }
 
-/*TODO: 
-        add edit/delete
-*/
-const MoneyInput: React.FC<MoneyInputProps> = ({ onChangeTransaction }) => {
-    // export default function MoneyInput() {
+const MoneyInput: React.FC<MoneyInputProps> = ({ onChangeTransaction, isEditing = false, editedTransaction = null }) => {
     const [selectColor, setSelectColor] = useState('#6d6d6dff');
     const [transactionType, setTransactionType] = useState('');
     const [transactionCategory, setTransactionCategory] = useState('');
@@ -26,6 +24,25 @@ const MoneyInput: React.FC<MoneyInputProps> = ({ onChangeTransaction }) => {
     const [subCategoryType, setSubCategoryType] = useState('');
     const [amount, setAmount] = useState(0);
     const [date, setDate] = useState("");
+
+    useEffect(() => {
+        if (editedTransaction) {
+            setTransactionType(editedTransaction.transactionType);
+            setTransactionCategory(editedTransaction.transactionCategory ?? '');
+            setCategoryType(editedTransaction.categoryType ?? '');
+            setSubCategoryType(editedTransaction.subCategoryType ?? '');
+            setAmount(editedTransaction.amount);
+            setDate(editedTransaction.date);
+
+            if (editedTransaction.transactionType === "Income") {
+                setSelectColor('#91ff83ff');
+            } else if (editedTransaction.transactionType === "Expense") {
+                setSelectColor('#ff7676ff');
+            } else {
+                setSelectColor('#d4d235ff');
+            }
+        }
+    }, [editedTransaction]);
 
     function handleTransactionTypeChange(e: React.ChangeEvent<HTMLSelectElement>) {
         const value = e.target.value;
@@ -53,45 +70,34 @@ const MoneyInput: React.FC<MoneyInputProps> = ({ onChangeTransaction }) => {
         switch (transactionType) {
             case 'Income':
                 return (
-                    <select
+                    <input
                         style={{ background: selectColor, color: 'black' }}
                         onChange={e => setTransactionCategory(e.target.value)}
-                    >
-                        <option>--Choose category of income--</option>
-                        <option>Paycheck</option>
-                        <option>Bonus</option>
-                        <option>Gifts</option>
-                    </select>
+                        value={transactionCategory}
+                        placeholder={'Category of income'}
+                    />
                 );
             case 'Expense':
                 return (
                     <>
-                        <select
+                        <input
                             style={{ background: selectColor, color: 'black' }}
                             onChange={e => setTransactionCategory(e.target.value)}
-                        >
-                            <option>--Choose category of expense--</option>
-                            <option>Wants</option>
-                            <option>Needs</option>
-                            <option>Paycheck</option>
-                        </select>
-                        <select
+                            value={transactionCategory}
+                            placeholder='Category of expense'
+                        />
+                        <input
                             style={{ background: selectColor, color: 'black' }}
                             onChange={e => setCategoryType(e.target.value)}
-                        >
-                            <option>--Choose category-type--</option>
-                            <option>Food</option>
-                            <option>Transportation</option>
-                            <option>Insurance</option>
-                        </select>
-                        <select
+                            value={categoryType}
+                            placeholder='Category type'
+                        />
+                        <input
                             style={{ background: selectColor, color: 'black' }}
                             onChange={e => setSubCategoryType(e.target.value)}
-                        >
-                            <option>--Choose sub-category-type--</option>
-                            <option>Groceries</option>
-                            <option>Restaraunts</option>
-                        </select>
+                            value={subCategoryType}
+                            placeholder='Sub-category type'
+                        />
                     </>
                 );
             default:
@@ -123,9 +129,40 @@ const MoneyInput: React.FC<MoneyInputProps> = ({ onChangeTransaction }) => {
             }
             return res.json();
         }).then(updatedUser => {
-            onChangeTransaction(updatedUser.transactions);
+            if (onChangeTransaction) {
+                onChangeTransaction(updatedUser.transactions);
+            }
         }).catch(error => {
             console.error("Error updating resource: ", error);
+        })
+    }
+
+    function editTransaction() {
+        if (!editedTransaction) return;
+
+        fetch(`/api/editTransaction/3?transactionId=${editedTransaction.id}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                id: editedTransaction.id,
+                transactionType: transactionType,
+                transactionCategory: transactionCategory,
+                categoryType: categoryType,
+                subCategoryType: subCategoryType,
+                amount: amount,
+                date: date,
+            })
+        }).then(res => {
+            if (!res.ok) {
+                throw new Error(`HTTP error, status: ${res.status}`);
+            }
+            return res.json();
+        }).then(updatedUser => {
+            if (onChangeTransaction) {
+                onChangeTransaction(updatedUser.transactions);
+            }
         })
     }
 
@@ -146,16 +183,18 @@ const MoneyInput: React.FC<MoneyInputProps> = ({ onChangeTransaction }) => {
             {options()}
             <input
                 type='number'
-                placeholder="Amount"
+                placeholder='Amount'
+                value={amount === 0 ? '' : amount}
                 style={{ background: selectColor, color: 'black' }}
                 onChange={e => setAmount(Number(e.target.value))}
             />
             <input
                 type='date'
                 style={{ background: selectColor, color: 'black' }}
+                value={date ? new Date(date).toISOString().split('T')[0] : ''}
                 onChange={handleDateChange}
             />
-            <button onClick={addTransaction}>Submit</button>
+            {isEditing ? <button onClick={editTransaction}>Save Changes</button> : <button onClick={addTransaction}>Submit</button>}
         </div >
     );
 }

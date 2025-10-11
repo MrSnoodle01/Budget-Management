@@ -56,7 +56,7 @@ function App() {
             <DisplayTransactions dateSelection={dateSelection} transactions={transactions} filter={filter} onChangeTransaction={setTransactions} />
           </div>
           <div className="right-section">
-            <Graphs dateSelection={dateSelection} transactions={transactions} filter={filter} />
+            <Graphs dateSelection={dateSelection} transactions={transactions} />
           </div>
         </>
       )}

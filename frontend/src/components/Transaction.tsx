@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import EditModal from './EditModal'
 
 type TransactionType = {
     id: number;
@@ -17,6 +18,7 @@ type TransactionProps = {
 
 const Transaction: React.FC<TransactionProps> = ({ transaction, onChangeTransaction }) => {
     const [backgroundColor, setBackgroundColor] = useState('')
+    const [showEdit, setShowEdit] = useState(false)
 
     useEffect(() => {
         switch (transaction.transactionType) {
@@ -78,9 +80,10 @@ const Transaction: React.FC<TransactionProps> = ({ transaction, onChangeTransact
                 </p>
             </div>
             <div style={{ display: "flex", gap: "2.5px", flexDirection: "column" }}>
-                <button>edit</button>
+                <button onClick={() => setShowEdit(true)}>edit</button>
                 <button onClick={deleteTransaction}>delete</button>
             </div>
+            <EditModal isOpen={showEdit} onClose={() => setShowEdit(false)} editedTransaction={transaction} onChangeTransaction={onChangeTransaction} />
         </div>
     )
 }

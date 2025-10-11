@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 type GraphsProps = {
     dateSelection: string;
     transactions: TransactionType[];
-    filter: string;
 }
 
 type TransactionType = {
@@ -17,7 +16,7 @@ type TransactionType = {
     date: string;
 }
 
-const Graphs: React.FC<GraphsProps> = ({ dateSelection, transactions, filter }) => {
+const Graphs: React.FC<GraphsProps> = ({ dateSelection, transactions }) => {
     const [wants, setWants] = useState(0);
     const [needs, setNeeds] = useState(0);
     const [savings, setSavings] = useState(0);
