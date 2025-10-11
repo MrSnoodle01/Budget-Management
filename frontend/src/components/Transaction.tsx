@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-interface TransactionProps {
+type TransactionType = {
     id: number;
     transactionType: string;
     transactionCategory?: string;
@@ -10,7 +10,12 @@ interface TransactionProps {
     date: string;
 }
 
-export default function Transaction(transaction: TransactionProps) {
+type TransactionProps = {
+    transaction: TransactionType;
+    onChangeTransaction: (option: TransactionType[]) => void;
+}
+
+const Transaction: React.FC<TransactionProps> = ({ transaction, onChangeTransaction }) => {
     const [backgroundColor, setBackgroundColor] = useState('')
 
     useEffect(() => {
@@ -26,6 +31,19 @@ export default function Transaction(transaction: TransactionProps) {
                 break;
         }
     }, [])
+
+    function deleteTransaction() {
+        fetch(`/api/deleteTransaction/3?transactionId=${transaction.id}`, {
+            method: 'DELETE',
+        }).then(res => {
+            if (!res.ok) {
+                throw new Error(`HTTP error, status: ${res.status}`);
+            }
+            return res.json();
+        }).then(updatedUser => {
+            onChangeTransaction(updatedUser.transactions);
+        })
+    }
 
     return (
         <div key={transaction.id} className="transaction" style={{ background: backgroundColor }}>
@@ -59,6 +77,12 @@ export default function Transaction(transaction: TransactionProps) {
                     {transaction.date}
                 </p>
             </div>
+            <div style={{ display: "flex", gap: "2.5px", flexDirection: "column" }}>
+                <button>edit</button>
+                <button onClick={deleteTransaction}>delete</button>
+            </div>
         </div>
     )
 }
+
+export default Transaction;

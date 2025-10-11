@@ -52,8 +52,8 @@ function App() {
             <FilterSelection onChangeFilter={setFilter} transactions={transactions} dateSelection={dateSelection} />
           </div>
           <div className='middle-section'>
-            <MoneyInput onAddTransaction={setTransactions} />
-            <DisplayTransactions dateSelection={dateSelection} transactions={transactions} filter={filter} />
+            <MoneyInput onChangeTransaction={setTransactions} />
+            <DisplayTransactions dateSelection={dateSelection} transactions={transactions} filter={filter} onChangeTransaction={setTransactions} />
           </div>
           <div className="right-section">
             <Graphs dateSelection={dateSelection} transactions={transactions} filter={filter} />

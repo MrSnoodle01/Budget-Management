@@ -11,13 +11,13 @@ type TransactionType = {
 }
 
 type MoneyInputProps = {
-    onAddTransaction: (option: TransactionType[]) => void;
+    onChangeTransaction: (option: TransactionType[]) => void;
 }
 
 /*TODO: 
         add edit/delete
 */
-const MoneyInput: React.FC<MoneyInputProps> = ({ onAddTransaction }) => {
+const MoneyInput: React.FC<MoneyInputProps> = ({ onChangeTransaction }) => {
     // export default function MoneyInput() {
     const [selectColor, setSelectColor] = useState('#6d6d6dff');
     const [transactionType, setTransactionType] = useState('');
@@ -123,7 +123,7 @@ const MoneyInput: React.FC<MoneyInputProps> = ({ onAddTransaction }) => {
             }
             return res.json();
         }).then(updatedUser => {
-            onAddTransaction(updatedUser.transactions);
+            onChangeTransaction(updatedUser.transactions);
         }).catch(error => {
             console.error("Error updating resource: ", error);
         })

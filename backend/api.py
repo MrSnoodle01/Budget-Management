@@ -2,6 +2,7 @@ from flask import Flask, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_restful import Resource, Api, reqparse, fields, marshal_with, abort
 from sqlalchemy.types import JSON
+from sqlalchemy.ext.mutable import MutableList
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
@@ -12,7 +13,7 @@ class UserModel(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     userName = db.Column(db.String(80), unique=True, nullable=False)
     email = db.Column(db.String(80), unique=True, nullable=False)
-    transactions = db.Column(JSON)
+    transactions = db.Column(MutableList.as_mutable(JSON))
 
     def __repr__(self):
         return f"User(userName = {self.userName}, email = {self.email})"
@@ -98,10 +99,28 @@ class getUserTransactions(Resource):
             user = user.filter.filter_by(type=filtervalue)
         return user
 
+class deleteTransaction(Resource):
+    @marshal_with(userFields)
+    def delete(self, id):
+        user = UserModel.query.filter_by(id=id).first()
+        transactionId = request.args.get('transactionId', default=None, type=int)
+
+        if not user:
+            abort(404, message="User not found")
+        if transactionId is None:
+            abort(400, message="Transaction ID is required")
+
+        user.transactions = [t for t in user.transactions if t['id'] != transactionId]
+
+        db.session.commit()
+
+        return user, 200
+
 api.add_resource(User, '/api/users/<int:id>')
 api.add_resource(Users, '/api/users/')
 api.add_resource(addTransaction, '/api/addTransaction/<int:id>')
 api.add_resource(getUserTransactions, '/api/getUserTransactions/<int:id>')
+api.add_resource(deleteTransaction, '/api/deleteTransaction/<int:id>')
 
 
 @app.route('/')

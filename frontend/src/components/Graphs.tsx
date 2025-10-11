@@ -38,7 +38,6 @@ const Graphs: React.FC<GraphsProps> = ({ dateSelection, transactions, filter }) 
             let transactionMonthName = transactionDate.toLocaleString('default', { month: 'long' });
             let transactionYear = transactionDate.getFullYear();
 
-            // if (filter === "All") {
             if ((transactionMonthName === dateMonth && String(transactionYear) === dateYear) || dateSelection === "") {
                 if (e.transactionCategory === "Wants") {
                     tempWants += e.amount;
@@ -50,23 +49,6 @@ const Graphs: React.FC<GraphsProps> = ({ dateSelection, transactions, filter }) 
                     tempIncome += e.amount;
                 }
             }
-            // } else {
-            //     const hasFilter = Object.values(e).some(value => String(value) === filter);
-            //     if (((transactionMonthName === dateMonth && String(transactionYear) === dateYear) || dateSelection) === "" && hasFilter) {
-            //         if ((transactionMonthName === dateMonth && String(transactionYear) === dateYear) || dateSelection === "") {
-            //             if (e.transactionCategory === "Wants") {
-            //                 tempWants += e.amount;
-            //             } else if (e.transactionCategory === "Needs") {
-            //                 tempNeeds += e.amount;
-            //             } else if (e.transactionType === "Savings") {
-            //                 tempSavings += e.amount;
-            //             } else if (e.transactionType === "Income") {
-            //                 tempIncome += e.amount;
-            //             }
-            //         }
-            //     }
-            // }
-
         });
 
         setWants(parseFloat(tempWants.toFixed(2)));
