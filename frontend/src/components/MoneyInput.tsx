@@ -1,14 +1,5 @@
 import { useState, useEffect } from "react"
-
-type TransactionType = {
-    id: number;
-    transactionType: string;
-    transactionCategory?: string;
-    categoryType?: string;
-    subCategoryType?: string;
-    amount: number;
-    date: string;
-}
+import type { TransactionType } from '../types/transaction';
 
 type MoneyInputProps = {
     onChangeTransaction?: (option: TransactionType[]) => void;

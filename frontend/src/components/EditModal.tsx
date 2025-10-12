@@ -1,15 +1,6 @@
 import ReactDOM from 'react-dom';
 import MoneyInput from './MoneyInput'
-
-type TransactionType = {
-    id: number;
-    transactionType: string;
-    transactionCategory?: string;
-    categoryType?: string;
-    subCategoryType?: string;
-    amount: number;
-    date: string;
-}
+import type { TransactionType } from '../types/transaction';
 
 export default function EditModal(props: { isOpen: boolean, onClose: () => void, editedTransaction: TransactionType, onChangeTransaction: (option: TransactionType[]) => void }) {
     if (!props.isOpen) return null;

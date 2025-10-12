@@ -1,20 +1,11 @@
 import Transaction from './Transaction'
+import type { TransactionType } from '../types/transaction';
 
 type DisplayTransactionsProps = {
     dateSelection: string;
     transactions: TransactionType[];
     filter: string;
     onChangeTransaction: (option: TransactionType[]) => void;
-}
-
-type TransactionType = {
-    id: number;
-    transactionType: string;
-    transactionCategory?: string;
-    categoryType?: string;
-    subCategoryType?: string;
-    amount: number;
-    date: string;
 }
 
 const DisplayTransactions: React.FC<DisplayTransactionsProps> = ({ dateSelection, transactions, filter, onChangeTransaction }) => {

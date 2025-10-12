@@ -1,15 +1,6 @@
 import { useEffect, useState } from 'react';
 import EditModal from './EditModal'
-
-type TransactionType = {
-    id: number;
-    transactionType: string;
-    transactionCategory?: string;
-    categoryType?: string;
-    subCategoryType?: string;
-    amount: number;
-    date: string;
-}
+import type { TransactionType } from '../types/transaction';
 
 type TransactionProps = {
     transaction: TransactionType;

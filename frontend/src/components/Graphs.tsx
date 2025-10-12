@@ -1,19 +1,10 @@
 import { PieChart } from '@mui/x-charts';
 import { useEffect, useState } from 'react';
+import type { TransactionType } from '../types/transaction';
 
 type GraphsProps = {
     dateSelection: string;
     transactions: TransactionType[];
-}
-
-type TransactionType = {
-    id: number;
-    transactionType: string;
-    transactionCategory?: string;
-    categoryType?: string;
-    subCategoryType?: string;
-    amount: number;
-    date: string;
 }
 
 const Graphs: React.FC<GraphsProps> = ({ dateSelection, transactions }) => {
