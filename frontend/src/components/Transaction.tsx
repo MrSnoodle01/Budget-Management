@@ -75,9 +75,9 @@ const Transaction: React.FC<TransactionProps> = ({ transaction, onChangeTransact
                     {transaction.date}
                 </p>
             </div>
-            <div style={{ display: "flex", gap: "2.5px", flexDirection: "column" }}>
-                <button onClick={() => setShowEdit(true)}>edit</button>
-                <button onClick={deleteTransaction}>delete</button>
+            <div style={{ display: "flex", flexDirection: "column", flex: "1" }}>
+                <button onClick={() => setShowEdit(true)} className="edit-delete-buttons">Edit</button>
+                <button onClick={deleteTransaction} className="edit-delete-buttons">Delete</button>
             </div>
             <EditModal isOpen={showEdit} onClose={() => setShowEdit(false)} editedTransaction={transaction} onChangeTransaction={onChangeTransaction} />
         </div>
