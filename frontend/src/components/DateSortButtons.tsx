@@ -24,6 +24,7 @@ const monthMap: Record<string, number> = {
 
 const DateSortButtons: React.FC<DateSortButtonsProps> = ({ onDateSelectionChange, transactions }) => {
     const [months, setMonths] = useState<string[]>([]);
+    const [chosenMonth, setChosenMonth] = useState("");
 
     useEffect(() => {
         let tempMonths: string[] = [];
@@ -52,11 +53,20 @@ const DateSortButtons: React.FC<DateSortButtonsProps> = ({ onDateSelectionChange
         setMonths(sortedDates);
     }, [onDateSelectionChange, transactions])
 
+    const handleClick = (month: string) => {
+        setChosenMonth(month);
+        onDateSelectionChange(month);
+    }
+
     return (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1px' }}>
-            <button onClick={(() => onDateSelectionChange(""))}>Show all months</button>
+            <button onClick={(() => handleClick(""))} style={{ backgroundColor: chosenMonth === "" ? "#646cff" : "" }}>Show all months</button>
             {months.map((e) => (
-                <button key={e} onClick={(() => onDateSelectionChange(e))}>{e}</button>
+                <button
+                    key={e}
+                    onClick={() => handleClick(e)}
+                    style={{ backgroundColor: chosenMonth === e ? "#646cff" : "" }}
+                >{e}</button>
             ))}
         </div>
     )
