@@ -26,7 +26,7 @@ const Transaction: React.FC<TransactionProps> = ({ transaction, onChangeTransact
     }, [])
 
     function deleteTransaction() {
-        fetch(`/api/deleteTransaction/3?transactionId=${transaction.id}`, {
+        fetch(`/api/deleteTransaction/1?transactionId=${transaction.id}`, {
             method: 'DELETE',
         }).then(res => {
             if (!res.ok) {

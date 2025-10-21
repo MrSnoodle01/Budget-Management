@@ -98,7 +98,7 @@ const MoneyInput: React.FC<MoneyInputProps> = ({ onChangeTransaction, isEditing 
 
     function addTransaction() {
         let dateId = new Date()
-        fetch('/api/addTransaction/3', {
+        fetch('/api/addTransaction/1', {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
@@ -131,7 +131,7 @@ const MoneyInput: React.FC<MoneyInputProps> = ({ onChangeTransaction, isEditing 
     function editTransaction() {
         if (!editedTransaction) return;
 
-        fetch(`/api/editTransaction/3?transactionId=${editedTransaction.id}`, {
+        fetch(`/api/editTransaction/1?transactionId=${editedTransaction.id}`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',

@@ -16,7 +16,7 @@ function App() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch('/api/getUserTransactions/3');
+        const res = await fetch('/api/getUserTransactions/1');
         if (!res.ok) {
           throw new Error(`HTTP error, status: ${res.status}`);
         }

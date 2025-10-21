@@ -45,7 +45,7 @@ const Graphs: React.FC<GraphsProps> = ({ dateSelection, transactions }) => {
         setNeeds(parseFloat(tempNeeds.toFixed(2)));
         setSavings(parseFloat(tempSavings.toFixed(2)));
         setIncome(parseFloat(tempIncome.toFixed(2)));
-    }, [transactions, dateSelection]); // recalculate data when transactions or dateselection changes
+    }, [transactions, dateSelection]);
 
     return (
         <div className='graphs'>
