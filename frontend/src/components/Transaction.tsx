@@ -11,6 +11,8 @@ const Transaction: React.FC<TransactionProps> = ({ transaction, onChangeTransact
     const [backgroundColor, setBackgroundColor] = useState('')
     const [showEdit, setShowEdit] = useState(false)
 
+    const token = localStorage.getItem("token");
+
     useEffect(() => {
         switch (transaction.transactionType) {
             case "Income":
@@ -26,8 +28,11 @@ const Transaction: React.FC<TransactionProps> = ({ transaction, onChangeTransact
     }, [])
 
     function deleteTransaction() {
-        fetch(`/api/deleteTransaction/1?transactionId=${transaction.id}`, {
+        fetch(`/api/deleteTransaction?transactionId=${transaction.id}`, {
             method: 'DELETE',
+            headers: {
+                "Authorization": `Bearer ${token}`,
+            },
         }).then(res => {
             if (!res.ok) {
                 throw new Error(`HTTP error, status: ${res.status}`);

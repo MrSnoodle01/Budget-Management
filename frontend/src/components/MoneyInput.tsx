@@ -16,6 +16,8 @@ const MoneyInput: React.FC<MoneyInputProps> = ({ onChangeTransaction, isEditing 
     const [amount, setAmount] = useState(0);
     const [date, setDate] = useState("");
 
+    const token = localStorage.getItem("token");
+
     useEffect(() => {
         if (editedTransaction) {
             setTransactionType(editedTransaction.transactionType);
@@ -96,45 +98,49 @@ const MoneyInput: React.FC<MoneyInputProps> = ({ onChangeTransaction, isEditing 
         }
     }
 
-    function addTransaction() {
+    async function addTransaction() {
         let dateId = new Date()
-        fetch('/api/addTransaction/1', {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                "transactions": [{
-                    id: dateId.getTime(),
-                    transactionType: transactionType,
-                    transactionCategory: transactionCategory,
-                    categoryType: categoryType,
-                    subCategoryType: subCategoryType,
-                    amount: amount,
-                    date: date,
-                }]
-            })
-        }).then(res => {
+        try {
+            const res = await fetch("/api/addTransaction", {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`,
+                },
+                body: JSON.stringify({
+                    transactions: [{
+                        id: dateId.getTime(),
+                        transactionType,
+                        transactionCategory,
+                        categoryType,
+                        subCategoryType,
+                        amount,
+                        date,
+                    }],
+                }),
+            });
+
             if (!res.ok) {
-                throw new Error(`HTTP error, status: ${res.status}`);
+                const text = await res.text();
+                throw new Error(`HTTP error ${res.status}: ${text}`);
             }
-            return res.json();
-        }).then(updatedUser => {
-            if (onChangeTransaction) {
-                onChangeTransaction(updatedUser.transactions);
-            }
-        }).catch(error => {
-            console.error("Error updating resource: ", error);
-        })
+
+            const updatedUser = await res.json();
+            if (onChangeTransaction) onChangeTransaction(updatedUser.transactions);
+            console.log("Transaction added successfully");
+        } catch (error) {
+            console.error("Error updating resource:", error);
+        }
     }
 
     function editTransaction() {
         if (!editedTransaction) return;
 
-        fetch(`/api/editTransaction/1?transactionId=${editedTransaction.id}`, {
+        fetch(`/api/editTransaction?transactionId=${editedTransaction.id}`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
             },
             body: JSON.stringify({
                 id: editedTransaction.id,
