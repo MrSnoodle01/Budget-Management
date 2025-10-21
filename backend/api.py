@@ -1,81 +1,165 @@
-from flask import Flask
+from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_restful import Resource, Api, reqparse, fields, marshal_with, abort
+from flask_bcrypt import Bcrypt
+from flask_login import LoginManager, login_user, login_required, logout_user, current_user, UserMixin
+from sqlalchemy.types import JSON
+from sqlalchemy.ext.mutable import MutableList
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
+from datetime import timedelta
+from flask_cors import CORS
+import os
 
 app = Flask(__name__)
+CORS(app, supports_credentials=True)
+app.config['JWT_SECRET_KEY'] = os.environ.get('JWT_SECRET_KEY', 'dev_secret_fallback')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'dev_secret_fallback')
 db = SQLAlchemy(app)
 api = Api(app)
+jwt = JWTManager(app)
 
-class UserModel(db.Model):
+bcrypt = Bcrypt(app)
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'login'
+
+class UserModel(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    userName = db.Column(db.String(80), unique=True, nullable=False)
+    username = db.Column(db.String(80), nullable=True)
+    password = db.Column(db.String(200), nullable=False) #longer to hold hash
     email = db.Column(db.String(80), unique=True, nullable=False)
+    transactions = db.Column(MutableList.as_mutable(JSON))
 
     def __repr__(self):
-        return f"User(userName = {self.userName}, email = {self.email})"
+        return f"User(username = {self.username}, email = {self.email})"
 
-
-user_args = reqparse.RequestParser()
-user_args.add_argument('userName', type=str, required=True, help='userName cannot be blank')
-user_args.add_argument('email', type=str, required=True, help='Email cannot be blank')
+@login_manager.user_loader
+def load_user(user_id):
+    return UserModel.query.get(int(user_id))
 
 userFields = {
     'id': fields.Integer, 
-    'userName': fields.String,
+    'username': fields.String,
+    'password': fields.String,
     'email': fields.String,
+    'transactions': fields.Raw,
 }
 
-class Users(Resource):
+class addTransaction(Resource):
+    @jwt_required()
+    @marshal_with(userFields)
+    def patch(self):
+        data = request.get_json()
+        user_id = get_jwt_identity()
+        user = UserModel.query.get(int(user_id))
+        if not user:
+            abort(404, message="User not found")
+        user.transactions = user.transactions + data["transactions"]
+        db.session.commit()
+        return user
+
+class getUserTransactions(Resource):
+    @jwt_required()
     @marshal_with(userFields)
     def get(self):
-        users = UserModel.query.all()
-        return users
+        filterValue = request.args.get('filter', default=None, type=str)
 
+        user_id = get_jwt_identity()
+        user = UserModel.query.filter_by(id=user_id).first()
+        if not user:
+            abort(404, message="User not found")
+
+        if filterValue and filterValue != 'All':
+            user = user.filter.filter_by(type=filtervalue)
+        return user
+
+class deleteTransaction(Resource):
+    @jwt_required()
     @marshal_with(userFields)
+    def delete(self):
+        user_id = get_jwt_identity()
+        user = UserModel.query.get(int(user_id))
+        transactionId = request.args.get('transactionId', default=None, type=int)
+
+        if not user:
+            abort(404, message="User not found")
+        if transactionId is None:
+            abort(400, message="Transaction ID is required")
+
+        user.transactions = [t for t in user.transactions if t['id'] != transactionId]
+        db.session.commit()
+        return user
+
+class editTransaction(Resource):
+    @jwt_required()
+    @marshal_with(userFields)
+    def patch(self):
+        user_id = get_jwt_identity()
+        user = UserModel.query.filter_by(id=user_id).first()
+        transactionId = request.args.get('transactionId', default=None, type=int)
+        data = request.get_json()
+
+        if not user:
+            abort(404, message="User not found")
+        if transactionId is None:
+            abort(400, message="Transaction ID is required")
+        
+        transactions = user.transactions.copy() if user.transactions else []
+
+        for i, transaction in enumerate(transactions):
+            if transaction.get("id") == transactionId:
+                transactions[i] = {**transaction, **data}
+                break
+
+        user.transactions = transactions
+        db.session.commit()
+        return user
+
+class registerUser(Resource):
     def post(self):
-        args = user_args.parse_args()
-        user = UserModel(userName=args["userName"], email=args["email"])
-        db.session.add(user)
+        data = request.get_json()
+        username = data.get("username")
+        email = data.get("email")
+        password = data.get("password")
+
+        if UserModel.query.filter_by(email=email).first():
+            abort(400, message="Email already exists")
+        if UserModel.query.filter_by(username=username).first():
+            abort(400, message="Username already exists")
+
+        hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
+        new_user = UserModel(username="", email=email, password=hashed_password, transactions=[])
+        db.session.add(new_user)
         db.session.commit()
-        users = UserModel.query.all()
-        return users, 201
+        return{"message": "User registered successfully"}, 201
 
-class User(Resource):
-    @marshal_with(userFields)
-    def get(self, id):
-        user = UserModel.query.filter_by(id=id).first()
-        if not user:
-            abort(404, "User not found")
-        return user
+class login(Resource):
+    def post(self):
+        data = request.get_json()
+        email = data.get("email")
+        password = data.get("password")
 
-    @marshal_with(userFields)
-    def patch(self, id):
-        args = user_args.parse_args()
-        user = UserModel.query.filter_by(id=id).first()
-        if not user:
-            abort(404, "User not found")
-        user.userName = args["userName"]
-        user.email = args["email"]
-        db.session.commit()
-        return user
+        user = UserModel.query.filter_by(email=email).first()
+        if not user or not bcrypt.check_password_hash(user.password, password):
+            abort(401, message="Invalid email or password")
+        
+        token = create_access_token(identity=str(user.id), expires_delta=timedelta(hours=1))
+        return {
+            "access_token": token,
+            "user":{
+                "id": user.id,
+                "username": user.username,
+                "email": user.email,
+            }
+        }, 200
 
-    @marshal_with(userFields)
-    def delete(self, id):
-        user = UserModel.query.filter_by(id=id).first()
-        if not user:
-            abort(404, "User not found")
-        db.session.delete(user)
-        db.session.commit()
-        users = UserModel.query.all()
-        return users, 201
-
-api.add_resource(User, '/api/users/<int:id>')
-api.add_resource(Users, '/api/users/')
-
-@app.route('/')
-def home():
-    return "<h1>Hello World!</h1>"
+api.add_resource(addTransaction, '/api/addTransaction')
+api.add_resource(getUserTransactions, '/api/getUserTransactions')
+api.add_resource(deleteTransaction, '/api/deleteTransaction')
+api.add_resource(editTransaction, '/api/editTransaction')
+api.add_resource(registerUser, '/api/registerUser')
+api.add_resource(login, '/api/login')
 
 if __name__ == '__main__':
     app.run(debug=True)

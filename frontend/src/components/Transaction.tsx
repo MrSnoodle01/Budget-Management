@@ -1,17 +1,17 @@
 import { useEffect, useState } from 'react';
+import EditModal from './EditModal'
+import type { TransactionType } from '../types/transaction';
 
-interface TransactionProps {
-    id: number;
-    transactionType: string;
-    transactionCategory: string;
-    categoryType?: string;
-    subCategoryType?: string;
-    amount: number;
-    date: string;
+type TransactionProps = {
+    transaction: TransactionType;
+    onChangeTransaction: (option: TransactionType[]) => void;
 }
 
-export default function Transaction(transaction: TransactionProps) {
+const Transaction: React.FC<TransactionProps> = ({ transaction, onChangeTransaction }) => {
     const [backgroundColor, setBackgroundColor] = useState('')
+    const [showEdit, setShowEdit] = useState(false)
+
+    const token = localStorage.getItem("token");
 
     useEffect(() => {
         switch (transaction.transactionType) {
@@ -26,6 +26,22 @@ export default function Transaction(transaction: TransactionProps) {
                 break;
         }
     }, [])
+
+    function deleteTransaction() {
+        fetch(`/api/deleteTransaction?transactionId=${transaction.id}`, {
+            method: 'DELETE',
+            headers: {
+                "Authorization": `Bearer ${token}`,
+            },
+        }).then(res => {
+            if (!res.ok) {
+                throw new Error(`HTTP error, status: ${res.status}`);
+            }
+            return res.json();
+        }).then(updatedUser => {
+            onChangeTransaction(updatedUser.transactions);
+        })
+    }
 
     return (
         <div key={transaction.id} className="transaction" style={{ background: backgroundColor }}>
@@ -59,6 +75,13 @@ export default function Transaction(transaction: TransactionProps) {
                     {transaction.date}
                 </p>
             </div>
+            <div style={{ display: "flex", gap: "2.5px", flexDirection: "column" }}>
+                <button onClick={() => setShowEdit(true)}>edit</button>
+                <button onClick={deleteTransaction}>delete</button>
+            </div>
+            <EditModal isOpen={showEdit} onClose={() => setShowEdit(false)} editedTransaction={transaction} onChangeTransaction={onChangeTransaction} />
         </div>
     )
 }
+
+export default Transaction;

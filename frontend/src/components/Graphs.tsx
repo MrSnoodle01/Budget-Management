@@ -1,12 +1,13 @@
 import { PieChart } from '@mui/x-charts';
 import { useEffect, useState } from 'react';
-import { tempData } from '../assets/tempData';
+import type { TransactionType } from '../types/transaction';
 
 type GraphsProps = {
     dateSelection: string;
+    transactions: TransactionType[];
 }
 
-const Graphs: React.FC<GraphsProps> = ({ dateSelection }) => {
+const Graphs: React.FC<GraphsProps> = ({ dateSelection, transactions }) => {
     const [wants, setWants] = useState(0);
     const [needs, setNeeds] = useState(0);
     const [savings, setSavings] = useState(0);
@@ -21,18 +22,18 @@ const Graphs: React.FC<GraphsProps> = ({ dateSelection }) => {
         let dateMonth = dateSelection.split(" ")[0];
         let dateYear = dateSelection.split(" ")[1];
 
-        tempData.forEach(e => {
+        transactions.forEach(e => {
             let transactionDate = new Date(e.date);
 
             let transactionMonthName = transactionDate.toLocaleString('default', { month: 'long' });
             let transactionYear = transactionDate.getFullYear();
 
             if ((transactionMonthName === dateMonth && String(transactionYear) === dateYear) || dateSelection === "") {
-                if (e.transactionCategory === "Want") {
+                if (e.transactionCategory === "Wants") {
                     tempWants += e.amount;
-                } else if (e.transactionCategory === "Need") {
+                } else if (e.transactionCategory === "Needs") {
                     tempNeeds += e.amount;
-                } else if (e.transactionCategory === "Savings") {
+                } else if (e.transactionType === "Savings") {
                     tempSavings += e.amount;
                 } else if (e.transactionType === "Income") {
                     tempIncome += e.amount;
@@ -44,7 +45,7 @@ const Graphs: React.FC<GraphsProps> = ({ dateSelection }) => {
         setNeeds(parseFloat(tempNeeds.toFixed(2)));
         setSavings(parseFloat(tempSavings.toFixed(2)));
         setIncome(parseFloat(tempIncome.toFixed(2)));
-    })
+    }, [transactions, dateSelection]);
 
     return (
         <div className='graphs'>
@@ -78,7 +79,7 @@ const Graphs: React.FC<GraphsProps> = ({ dateSelection }) => {
                                 { id: 'Needs', value: parseFloat((needs / income * 100).toFixed(2)), color: 'green' },
                                 { id: 'Wants', value: parseFloat((wants / income * 100).toFixed(2)), color: 'red' },
                                 { id: 'Savings', value: parseFloat((savings / income * 100).toFixed(2)), color: 'yellow' },
-                                { id: 'Extra', value: parseFloat(((income - needs - wants) / income * 100).toFixed(2)), color: 'gray' },
+                                { id: 'Extra', value: parseFloat(((income - needs - wants - savings) / income * 100).toFixed(2)), color: 'gray' },
                             ],
                         },
                     ]}
@@ -104,7 +105,7 @@ const Graphs: React.FC<GraphsProps> = ({ dateSelection }) => {
                 />
             }
             <p>
-                Needs: ${parseFloat((needs).toFixed(2))} Wants: ${parseFloat((wants).toFixed(2))} Savings: ${parseFloat((savings).toFixed(2))} Extra: ${parseFloat(((income - needs - wants)).toFixed(2))}
+                Needs: ${parseFloat((needs).toFixed(2))} Wants: ${parseFloat((wants).toFixed(2))} Savings: ${parseFloat((savings).toFixed(2))} Extra: ${parseFloat(((income - needs - wants - savings)).toFixed(2))}
             </p>
         </div>
     )
