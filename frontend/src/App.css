@@ -101,6 +101,7 @@
   flex-direction: column;
   gap: 10px;
   width: 60vw;
+  height: 85vh;
 }
 
 .input-container {
