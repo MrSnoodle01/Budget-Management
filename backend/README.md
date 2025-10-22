@@ -6,15 +6,15 @@ Adds a transaction for the user
 
 Expects a json body with
 ```
-    transactions: [{
-        id: dateId.getTime(),
-        transactionType,
-        transactionCategory,
-        categoryType,
-        subCategoryType,
-        amount,
-        date,
-    }]
+transactions: [{
+    id: dateId.getTime(),
+    transactionType,
+    transactionCategory,
+    categoryType,
+    subCategoryType,
+    amount,
+    date,
+}]
 ```
 
 Returns an array of updated transaction objects

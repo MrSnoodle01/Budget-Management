@@ -49,6 +49,16 @@ const MoneyInput: React.FC<MoneyInputProps> = ({ onChangeTransaction, isEditing 
         }
     }
 
+    function capitalizeWords(sentence: string): string {
+        if (!sentence) {
+            return '';
+        }
+        return sentence
+            .split(' ')
+            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+            .join(' ')
+    }
+
     function handleDateChange(e: React.ChangeEvent<HTMLInputElement>) {
         let newDate = new Date(e.target.value + "T00:00:00");
         const options: Intl.DateTimeFormatOptions = {
@@ -110,10 +120,10 @@ const MoneyInput: React.FC<MoneyInputProps> = ({ onChangeTransaction, isEditing 
                 body: JSON.stringify({
                     transactions: [{
                         id: dateId.getTime(),
-                        transactionType,
-                        transactionCategory,
-                        categoryType,
-                        subCategoryType,
+                        transactionType: capitalizeWords(transactionType),
+                        transactionCategory: capitalizeWords(transactionCategory),
+                        categoryType: capitalizeWords(categoryType),
+                        subCategoryType: capitalizeWords(subCategoryType),
                         amount,
                         date,
                     }],
