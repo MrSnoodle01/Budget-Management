@@ -80,7 +80,7 @@ function App() {
     };
 
     fetchData();
-  }, [setLoggedIn]);
+  }, [loggedIn]);
 
   return (
     <div className='page'>
@@ -104,28 +104,27 @@ function App() {
           </>
         )
       ) : (
-        <div>
-
-          <form onSubmit={handleLogin}>
-            <label>
-              Email:
-              <input
-                type="email"
-                autoComplete="username"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </label>
-            <label>
-              Password:
-              <input
-                type="password"
-                autoComplete="current-password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </label>
-          </form>
+        <div className="login-page">
+          <div className="login-input">
+            <p>Email: </p>
+            <input
+              type="email"
+              autoComplete="username"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="login-text"
+            />
+          </div>
+          <div className="login-input">
+            <p>Password: </p>
+            <input
+              type="password"
+              autoComplete="current-password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="login-text"
+            />
+          </div>
           <button onClick={handleLogin}> Log In </button>
           <button onClick={handleRegisterUser}> Sign up </button>
         </div>

@@ -48,7 +48,6 @@ userFields = {
 
 class addTransaction(Resource):
     @jwt_required()
-    @marshal_with(userFields)
     def patch(self):
         data = request.get_json()
         user_id = get_jwt_identity()
@@ -57,26 +56,21 @@ class addTransaction(Resource):
             abort(404, message="User not found")
         user.transactions = user.transactions + data["transactions"]
         db.session.commit()
-        return user
+        return {"transactions": user.transactions}, 200
 
 class getUserTransactions(Resource):
     @jwt_required()
-    @marshal_with(userFields)
     def get(self):
-        filterValue = request.args.get('filter', default=None, type=str)
-
         user_id = get_jwt_identity()
         user = UserModel.query.filter_by(id=user_id).first()
+
         if not user:
             abort(404, message="User not found")
 
-        if filterValue and filterValue != 'All':
-            user = user.filter.filter_by(type=filtervalue)
-        return user
+        return {"transactions": user.transactions}, 200
 
 class deleteTransaction(Resource):
     @jwt_required()
-    @marshal_with(userFields)
     def delete(self):
         user_id = get_jwt_identity()
         user = UserModel.query.get(int(user_id))
@@ -89,11 +83,10 @@ class deleteTransaction(Resource):
 
         user.transactions = [t for t in user.transactions if t['id'] != transactionId]
         db.session.commit()
-        return user
+        return {"transactions": user.transactions}, 200
 
 class editTransaction(Resource):
     @jwt_required()
-    @marshal_with(userFields)
     def patch(self):
         user_id = get_jwt_identity()
         user = UserModel.query.filter_by(id=user_id).first()
@@ -114,25 +107,22 @@ class editTransaction(Resource):
 
         user.transactions = transactions
         db.session.commit()
-        return user
+        return {"transactions": user.transactions}, 200
 
 class registerUser(Resource):
     def post(self):
         data = request.get_json()
-        username = data.get("username")
         email = data.get("email")
         password = data.get("password")
 
         if UserModel.query.filter_by(email=email).first():
             abort(400, message="Email already exists")
-        if UserModel.query.filter_by(username=username).first():
-            abort(400, message="Username already exists")
 
         hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
-        new_user = UserModel(username="", email=email, password=hashed_password, transactions=[])
+        new_user = UserModel(username=email, email=email, password=hashed_password, transactions=[])
         db.session.add(new_user)
         db.session.commit()
-        return{"message": "User registered successfully"}, 201
+        return{"message": "User registered successfully"}, 200
 
 class login(Resource):
     def post(self):

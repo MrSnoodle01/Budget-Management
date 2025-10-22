@@ -21,7 +21,6 @@ const monthMap: Record<string, number> = {
     December: 11,
 };
 
-
 const DateSortButtons: React.FC<DateSortButtonsProps> = ({ onDateSelectionChange, transactions }) => {
     const [months, setMonths] = useState<string[]>([]);
     const [chosenMonth, setChosenMonth] = useState("");
