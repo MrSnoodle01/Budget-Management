@@ -156,4 +156,4 @@ api.add_resource(registerUser, '/api/registerUser')
 api.add_resource(login, '/api/login')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=8080)
