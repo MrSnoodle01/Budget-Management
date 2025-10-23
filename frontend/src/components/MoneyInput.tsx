@@ -73,34 +73,59 @@ const MoneyInput: React.FC<MoneyInputProps> = ({ onChangeTransaction, isEditing 
         switch (transactionType) {
             case 'Income':
                 return (
-                    <input
-                        style={{ background: selectColor, color: 'black' }}
-                        onChange={e => setTransactionCategory(e.target.value)}
-                        value={transactionCategory}
-                        placeholder={'Category of income'}
-                    />
-                );
-            case 'Expense':
-                return (
-                    <>
+                    <div className="input-group">
+                        <label htmlFor="Category">
+                            Income Category
+                        </label>
                         <input
+                            id="Category"
                             style={{ background: selectColor, color: 'black' }}
                             onChange={e => setTransactionCategory(e.target.value)}
                             value={transactionCategory}
-                            placeholder='Category of expense'
+                            placeholder={'Paycheck, Gift, etc.'}
                         />
-                        <input
-                            style={{ background: selectColor, color: 'black' }}
-                            onChange={e => setCategoryType(e.target.value)}
-                            value={categoryType}
-                            placeholder='Category type'
-                        />
-                        <input
-                            style={{ background: selectColor, color: 'black' }}
-                            onChange={e => setSubCategoryType(e.target.value)}
-                            value={subCategoryType}
-                            placeholder='Sub-category type'
-                        />
+                    </div>
+                );
+
+            case 'Expense':
+                return (
+                    <>
+                        <div className="input-group">
+                            <label htmlFor="Category">
+                                Expense Category
+                            </label>
+                            <input
+                                id="Category"
+                                style={{ background: selectColor, color: 'black' }}
+                                onChange={e => setTransactionCategory(e.target.value)}
+                                value={transactionCategory}
+                                placeholder='Needs, Wants'
+                            />
+                        </div>
+                        <div className="input-group">
+                            <label htmlFor="Type">
+                                Category Type
+                            </label>
+                            <input
+                                id="Type"
+                                style={{ background: selectColor, color: 'black' }}
+                                onChange={e => setCategoryType(e.target.value)}
+                                value={categoryType}
+                                placeholder='Food, Automotive, etc.'
+                            />
+                        </div>
+                        <div className="input-group">
+                            <label htmlFor="subType">
+                                Category Sub-Type
+                            </label>
+                            <input
+                                id="subType"
+                                style={{ background: selectColor, color: 'black' }}
+                                onChange={e => setSubCategoryType(e.target.value)}
+                                value={subCategoryType}
+                                placeholder='Restaurant, Gas, etc.'
+                            />
+                        </div>
                     </>
                 );
             default:
@@ -187,32 +212,49 @@ const MoneyInput: React.FC<MoneyInputProps> = ({ onChangeTransaction, isEditing 
 
     return (
         <div className="input-container" >
-            <select
-                style={{ background: selectColor, color: 'black' }}
-                id="input-type"
-                value={transactionType}
-                onChange={handleTransactionTypeChange}
-            >
-                <option value="">--Choose Input type--</option>
-                <option value="Income">Income</option>
-                <option value="Expense">Expense</option>
-                <option value="Savings">Savings</option>
-                <option value="Investing">Investing</option>
-            </select>
+            <div className="input-group">
+                <label htmlFor="input-type">
+                    Transaction Type
+                </label>
+                <select
+                    style={{ background: selectColor, color: 'black' }}
+                    id="input-type"
+                    value={transactionType}
+                    onChange={handleTransactionTypeChange}
+                >
+                    <option value="">--Choose Input type--</option>
+                    <option value="Income">Income</option>
+                    <option value="Expense">Expense</option>
+                    <option value="Savings">Savings</option>
+                    <option value="Investing">Investing</option>
+                </select>
+            </div>
             {options()}
-            <input
-                type='number'
-                placeholder='Amount'
-                value={amount === 0 ? '' : amount}
-                style={{ background: selectColor, color: 'black' }}
-                onChange={e => setAmount(Number(e.target.value))}
-            />
-            <input
-                type='date'
-                style={{ background: selectColor, color: 'black' }}
-                value={date ? new Date(date).toISOString().split('T')[0] : ''}
-                onChange={handleDateChange}
-            />
+            <div className="input-group">
+                <label htmlFor="amount">
+                    Amount
+                </label>
+                <input
+                    id="amount"
+                    type='number'
+                    placeholder='Amount'
+                    value={amount === 0 ? '' : amount}
+                    style={{ background: selectColor, color: 'black' }}
+                    onChange={e => setAmount(Number(e.target.value))}
+                />
+            </div>
+            <div className="input-group">
+                <label htmlFor="date">
+                    Date
+                </label>
+                <input
+                    id="date"
+                    type='date'
+                    style={{ background: selectColor, color: 'black' }}
+                    value={date ? new Date(date).toISOString().split('T')[0] : ''}
+                    onChange={handleDateChange}
+                />
+            </div>
             {isEditing ? <button onClick={editTransaction}>Save Changes</button> : <button onClick={addTransaction}>Submit</button>}
         </div >
     );
