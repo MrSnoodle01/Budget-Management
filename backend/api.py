@@ -134,7 +134,7 @@ class login(Resource):
         if not user or not bcrypt.check_password_hash(user.password, password):
             abort(401, message="Invalid email or password")
         
-        token = create_access_token(identity=str(user.id), expires_delta=timedelta(hours=1))
+        token = create_access_token(identity=str(user.id), expires_delta=timedelta(hours=2))
         return {
             "access_token": token,
             "user":{
