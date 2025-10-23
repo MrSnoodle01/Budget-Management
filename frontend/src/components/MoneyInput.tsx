@@ -14,7 +14,7 @@ const MoneyInput: React.FC<MoneyInputProps> = ({ onChangeTransaction, isEditing 
     const [categoryType, setCategoryType] = useState('');
     const [subCategoryType, setSubCategoryType] = useState('');
     const [amount, setAmount] = useState(0);
-    const [date, setDate] = useState("");
+    const [date, setDate] = useState('');
 
     const token = localStorage.getItem("token");
 
@@ -110,6 +110,18 @@ const MoneyInput: React.FC<MoneyInputProps> = ({ onChangeTransaction, isEditing 
 
     async function addTransaction() {
         let dateId = new Date()
+
+        if (transactionType != "Savings" && transactionType != "Investing") {
+            if (transactionType === '' || date === '' || amount <= 0) {
+                alert("Please input all required categories");
+                return;
+            }
+        }
+        if (transactionType === '' || transactionCategory === '' || date === '' || amount <= 0) {
+            alert("Please input all required categories");
+            return;
+        }
+
         try {
             const res = await fetch("/api/addTransaction", {
                 method: "PATCH",
@@ -121,7 +133,7 @@ const MoneyInput: React.FC<MoneyInputProps> = ({ onChangeTransaction, isEditing 
                     transactions: [{
                         id: dateId.getTime(),
                         transactionType: capitalizeWords(transactionType),
-                        transactionCategory: capitalizeWords(transactionCategory),
+                        transactionCategory: transactionType === "Income" || transactionType === "Expense" ? capitalizeWords(transactionCategory) : '',
                         categoryType: capitalizeWords(categoryType),
                         subCategoryType: capitalizeWords(subCategoryType),
                         amount,

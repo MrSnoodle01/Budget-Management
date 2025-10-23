@@ -16,13 +16,18 @@ const FilterSelection: React.FC<FilterSelection> = ({ onChangeFilter, transactio
         let dateMonth = dateSelection.split(" ")[0];
         let dateYear = dateSelection.split(" ")[1];
 
+        if (dateSelection.split(" ")[1] === undefined) { // if sorting by year only
+            dateMonth = "";
+            dateYear = dateSelection.split(" ")[0];
+        }
+
         transactions.forEach(e => {
             let transactionDate = new Date(e.date);
 
             let transactionMonthName = transactionDate.toLocaleString('default', { month: 'long' });
             let transactionYear = transactionDate.getFullYear();
 
-            if ((transactionMonthName === dateMonth && String(transactionYear) === dateYear) || dateSelection === "") {
+            if (((transactionMonthName === dateMonth || dateMonth === "") && String(transactionYear) === dateYear) || dateSelection === "") {
                 if (!tempFilters.includes(e.transactionType)) {
                     tempFilters.push(e.transactionType);
                 }

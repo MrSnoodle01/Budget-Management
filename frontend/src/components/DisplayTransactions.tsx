@@ -26,12 +26,16 @@ const DisplayTransactions: React.FC<DisplayTransactionsProps> = ({ dateSelection
                 let transactionYear = transactionDate.getFullYear();
 
                 if (filter === "All") {
-                    if (transactionMonth === dateSelection.split(" ")[0] && String(transactionYear) === dateSelection.split(" ")[1]) {
+                    if (dateSelection.split(" ")[1] === undefined && String(transactionYear) === dateSelection) { // sorting by year only
+                        return <Transaction key={transaction.id} onChangeTransaction={onChangeTransaction} transaction={transaction} />
+                    } else if (transactionMonth === dateSelection.split(" ")[0] && String(transactionYear) === dateSelection.split(" ")[1]) {
                         return <Transaction key={transaction.id} onChangeTransaction={onChangeTransaction} transaction={transaction} />
                     }
                 } else {
                     const hasFilter = Object.values(transaction).some(value => String(value) === filter);
-                    if (((transactionMonth === dateSelection.split(" ")[0] && String(transactionYear) === dateSelection.split(" ")[1]) || dateSelection === "") && hasFilter) {
+                    if (dateSelection.split(" ")[1] === undefined && String(transactionYear) === dateSelection && hasFilter) { // sorting by year only
+                        return <Transaction key={transaction.id} onChangeTransaction={onChangeTransaction} transaction={transaction} />
+                    } else if (((transactionMonth === dateSelection.split(" ")[0] && String(transactionYear) === dateSelection.split(" ")[1]) || dateSelection === "") && hasFilter) {
                         return <Transaction key={transaction.id} onChangeTransaction={onChangeTransaction} transaction={transaction} />
                     }
                 }
