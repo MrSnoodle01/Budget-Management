@@ -27,7 +27,10 @@ function App() {
       body: JSON.stringify({ email, password }),
     });
 
-    if (!res.ok) throw new Error("Invalid credentials");
+    if (!res.ok) {
+      alert("Email or password is incorrect");
+      throw new Error("Email or password is incorrect");
+    }
 
     const data = await res.json();
 
@@ -45,7 +48,10 @@ function App() {
       body: JSON.stringify({ email, password }),
     });
 
-    if (!res.ok) throw new Error("Invalid credentials");
+    if (!res.ok) {
+      alert("Email is already in use");
+      throw new Error("Email is already in use");
+    }
 
     const data = await res.json();
 
@@ -92,6 +98,7 @@ function App() {
             <div className="left-section">
               <DateSortButtons onDateSelectionChange={setDateSelection} transactions={transactions} />
               <FilterSelection onChangeFilter={setFilter} transactions={transactions} dateSelection={dateSelection} />
+              <p>Logged in as {email}</p>
               <button onClick={handleLogout}>logout</button>
             </div>
             <div className='middle-section'>
