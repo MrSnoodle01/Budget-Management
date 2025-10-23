@@ -5,6 +5,41 @@
   text-align: center;
 }
 
+.login-text {
+  border-radius: 10px
+}
+
+.login-input {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+.login-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px
+}
+
+.edit-delete-buttons {
+  background-color: transparent;
+  padding: 0;
+  border-radius: 8px;
+  border: none;
+  font-size: 1em;
+  color: #000;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  flex: 1;
+}
+
+.edit-delete-buttons:hover {
+  background-color: rgba(171, 171, 214, 0.644);
+}
+
 .modal-content {
   position: fixed;
   top: 50%;
@@ -66,6 +101,13 @@
   flex-direction: column;
   gap: 10px;
   width: 60vw;
+  height: 85vh;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 }
 
 .input-container {
@@ -80,7 +122,7 @@
 .transaction {
   display: flex;
   border: 1px solid;
-  border-radius: 50px;
+  border-radius: 25px;
   border-color: transparent;
   margin: 1px 0px;
   width: 40vw;

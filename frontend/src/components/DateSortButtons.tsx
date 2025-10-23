@@ -21,43 +21,74 @@ const monthMap: Record<string, number> = {
     December: 11,
 };
 
-
 const DateSortButtons: React.FC<DateSortButtonsProps> = ({ onDateSelectionChange, transactions }) => {
-    const [months, setMonths] = useState<string[]>([]);
+    const [yearMonthMap, setYearMonthMap] = useState<Record<string, string[]>>({});
+    const [chosenOption, setChosenOption] = useState("");
 
     useEffect(() => {
-        let tempMonths: string[] = [];
+        let tempMap: Record<string, Set<string>> = {};
 
+        // get all unique transaction dates
         transactions.forEach(e => {
             let dateObject = new Date(e.date);
 
             let monthName = dateObject.toLocaleString('default', { month: 'long' });
             let year = dateObject.getFullYear();
 
-            let fullDate = monthName + " " + year;
+            let fullDate = `${monthName} ${year}`;
 
-            if (!tempMonths.includes(fullDate)) {
-                tempMonths.push(fullDate)
+            if (!tempMap[year]) {
+                tempMap[year] = new Set();
             }
+            tempMap[year].add(fullDate);
         })
 
-        const sortedDates = [...tempMonths].sort((a, b) => {
-            const [monthA, yearA] = a.split(" ");
-            const [monthB, yearB] = b.split(" ");
-            const dateA = new Date(Number(yearA), monthMap[monthA]);
-            const dateB = new Date(Number(yearB), monthMap[monthB]);
-            return dateB.getTime() - dateA.getTime();
-        })
+        // convert to sorted object
+        const sortedMap: Record<string, string[]> = {};
+        const sortedYears = Object.keys(tempMap).sort((a, b) => Number(b) - Number(a));
 
-        setMonths(sortedDates);
+        sortedYears.forEach((year) => {
+            const sortedMonths = Array.from(tempMap[year]).sort((a, b) => {
+                const [monthA] = a.split(" ");
+                const [monthB] = b.split(" ");
+                return monthMap[monthB] - monthMap[monthA]; // descending sort
+            });
+            sortedMap[year] = sortedMonths;
+        });
+
+        setYearMonthMap(sortedMap);
     }, [onDateSelectionChange, transactions])
+
+    const handleClick = (month: string) => {
+        setChosenOption(month);
+        onDateSelectionChange(month);
+    }
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1px' }}>
-            <button onClick={(() => onDateSelectionChange(""))}>Show all months</button>
-            {months.map((e) => (
-                <button key={e} onClick={(() => onDateSelectionChange(e))}>{e}</button>
-            ))}
+            <button onClick={(() => handleClick(""))} style={{ backgroundColor: chosenOption === "" ? "#646cff" : "" }}>Show all months</button>
+            {Object.keys(yearMonthMap)
+                .sort((a, b) => Number(b) - Number(a))
+                .map((year) => (
+                    <React.Fragment>
+                        <button
+                            key={year}
+                            onClick={() => handleClick(year)}
+                            style={{ backgroundColor: chosenOption === year ? "#646cff" : "" }}
+                        >
+                            {year}
+                        </button>
+                        {yearMonthMap[year].map((month) => (
+                            <button
+                                key={month}
+                                onClick={() => handleClick(month)}
+                                style={{ backgroundColor: chosenOption === month ? "#646cff" : "" }}
+                            >
+                                {month}
+                            </button>
+                        ))}
+                    </React.Fragment>
+                ))}
         </div>
     )
 }
