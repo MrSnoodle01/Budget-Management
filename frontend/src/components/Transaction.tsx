@@ -12,6 +12,7 @@ const Transaction: React.FC<TransactionProps> = ({ transaction, onChangeTransact
     const [showEdit, setShowEdit] = useState(false)
 
     const token = localStorage.getItem("token");
+    const API_URL = import.meta.env.VITE_API_URL;
 
     useEffect(() => {
         switch (transaction.transactionType) {
@@ -28,7 +29,7 @@ const Transaction: React.FC<TransactionProps> = ({ transaction, onChangeTransact
     }, [])
 
     function deleteTransaction() {
-        fetch(`https://useful-catha-richardsonjosh03-4f8884d3.koyeb.app/api/deleteTransaction?transactionId=${transaction.id}`, {
+        fetch(API_URL + `/api/deleteTransaction?transactionId=${transaction.id}`, {
             method: 'DELETE',
             headers: {
                 "Authorization": `Bearer ${token}`,

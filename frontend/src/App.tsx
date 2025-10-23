@@ -17,11 +17,12 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(false);
 
   const token = localStorage.getItem("token");
+  const API_URL = import.meta.env.VITE_API_URL;
 
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
 
-    const res = await fetch("https://useful-catha-richardsonjosh03-4f8884d3.koyeb.app/api/login", {
+    const res = await fetch(API_URL + "/api/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
@@ -42,7 +43,7 @@ function App() {
   async function handleRegisterUser(e: React.FormEvent) {
     e.preventDefault();
 
-    const res = await fetch("https://useful-catha-richardsonjosh03-4f8884d3.koyeb.app/api/registerUser", {
+    const res = await fetch(API_URL + "/api/registerUser", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
@@ -68,7 +69,7 @@ function App() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch('https://useful-catha-richardsonjosh03-4f8884d3.koyeb.app/api/getUserTransactions', {
+        const res = await fetch(API_URL + '/api/getUserTransactions', {
           headers: {
             'Authorization': `Bearer ${token}`
           }
