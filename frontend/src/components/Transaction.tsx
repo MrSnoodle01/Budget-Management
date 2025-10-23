@@ -28,7 +28,7 @@ const Transaction: React.FC<TransactionProps> = ({ transaction, onChangeTransact
     }, [])
 
     function deleteTransaction() {
-        fetch(`/api/deleteTransaction?transactionId=${transaction.id}`, {
+        fetch(`https://useful-catha-richardsonjosh03-4f8884d3.koyeb.app/api/deleteTransaction?transactionId=${transaction.id}`, {
             method: 'DELETE',
             headers: {
                 "Authorization": `Bearer ${token}`,

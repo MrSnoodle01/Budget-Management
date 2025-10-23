@@ -148,7 +148,7 @@ const MoneyInput: React.FC<MoneyInputProps> = ({ onChangeTransaction, isEditing 
         }
 
         try {
-            const res = await fetch("/api/addTransaction", {
+            const res = await fetch("https://useful-catha-richardsonjosh03-4f8884d3.koyeb.app/api/addTransaction", {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",
@@ -183,7 +183,7 @@ const MoneyInput: React.FC<MoneyInputProps> = ({ onChangeTransaction, isEditing 
     function editTransaction() {
         if (!editedTransaction) return;
 
-        fetch(`/api/editTransaction?transactionId=${editedTransaction.id}`, {
+        fetch(`https://useful-catha-richardsonjosh03-4f8884d3.koyeb.app/api/editTransaction?transactionId=${editedTransaction.id}`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
