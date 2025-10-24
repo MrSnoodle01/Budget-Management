@@ -28,7 +28,8 @@ const Graphs: React.FC<GraphsProps> = ({ dateSelection, transactions }) => {
             let transactionMonthName = transactionDate.toLocaleString('default', { month: 'long' });
             let transactionYear = transactionDate.getFullYear();
 
-            if ((transactionMonthName === dateMonth && String(transactionYear) === dateYear) || dateSelection === "") {
+            // if dateYear is undefined then we are searching by year only, which gets put into dateMonth
+            if ((transactionMonthName === dateMonth && String(transactionYear) === dateYear) || dateSelection === "" || (dateYear === undefined && String(transactionYear) === dateMonth)) {
                 if (e.transactionCategory === "Wants") {
                     tempWants += e.amount;
                 } else if (e.transactionCategory === "Needs") {
