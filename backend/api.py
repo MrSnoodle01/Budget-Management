@@ -71,7 +71,7 @@ class getUserTransactions(Resource):
         if not user:
             abort(404, message="User not found")
 
-        return {"transactions": user.transactions}, 200
+        return {"transactions": user.transactions, "email": user.email}, 200
 
 class deleteTransaction(Resource):
     @jwt_required()

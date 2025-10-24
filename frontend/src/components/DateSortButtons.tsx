@@ -70,7 +70,7 @@ const DateSortButtons: React.FC<DateSortButtonsProps> = ({ onDateSelectionChange
             {Object.keys(yearMonthMap)
                 .sort((a, b) => Number(b) - Number(a))
                 .map((year) => (
-                    <React.Fragment>
+                    <React.Fragment key={year}>
                         <button
                             key={year}
                             onClick={() => handleClick(year)}
@@ -80,7 +80,7 @@ const DateSortButtons: React.FC<DateSortButtonsProps> = ({ onDateSelectionChange
                         </button>
                         {yearMonthMap[year].map((month) => (
                             <button
-                                key={month}
+                                key={month + year}
                                 onClick={() => handleClick(month)}
                                 style={{ backgroundColor: chosenOption === month ? "#646cff" : "" }}
                             >

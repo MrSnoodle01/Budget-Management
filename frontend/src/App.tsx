@@ -14,7 +14,7 @@ function App() {
   const [filter, setFilter] = useState("All");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(localStorage.getItem("token") != null);
 
   const token = localStorage.getItem("token");
   const API_URL = import.meta.env.VITE_API_URL;
@@ -79,6 +79,8 @@ function App() {
         }
         const json = await res.json();
         setTransactions(json.transactions);
+        setEmail(json.email);
+        console.log(json);
       } catch (error) {
         console.error("Error fetching transactions: ", error);
       } finally {

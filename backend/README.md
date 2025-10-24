@@ -34,19 +34,23 @@ transactions: [
 
 ## GET /api/getUserTransactions
 
-Returns all of the currently logged in user's transactions
+Returns all of the currently logged in user's transactions and the user's email
 ```
-transactions: [
-    {
-        id: number
-        transactionType: string
-        transactionCategory?: string
-        categoryType?: string
-        subCategoryType?: string
-        amount: number
-        date: string
-    },
-]
+{
+    transactions: [
+        {
+            id: number
+            transactionType: string
+            transactionCategory?: string
+            categoryType?: string
+            subCategoryType?: string
+            amount: number
+            date: string
+        },
+    ],
+    email: user.email
+}
+
 ```
 
 ## DELETE /api/deleteTransaction
