@@ -6,12 +6,18 @@ import Graphs from './components/Graphs';
 import FilterSelection from './components/FilterSelection';
 import { useState, useEffect } from 'react';
 import type { TransactionType } from './types/transaction';
+import type { FilterType } from './types/filter';
 
 function App() {
   const [dateSelection, setDateSelection] = useState("");
   const [transactions, setTransactions] = useState<TransactionType[]>([])
   const [loading, setLoading] = useState(true);
-  const [filter, setFilter] = useState("All");
+  const [filter, setFilter] = useState<FilterType>({
+    transactionType: 'All',
+    transactionCategory: 'All',
+    categoryType: 'All',
+    subCategoryType: 'All'
+  });
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loggedIn, setLoggedIn] = useState(localStorage.getItem("token") != null);
