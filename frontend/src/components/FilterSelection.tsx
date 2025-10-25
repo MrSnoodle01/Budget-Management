@@ -98,26 +98,51 @@ const FilterSelection: React.FC<FilterSelection> = ({ onChangeFilter, transactio
     return (
         <div>
             <p>Filter by: </p>
-            <select onChange={e => changeFilter(e.target.value, 'transactionType')}>
-                {transactionTypeFilter.map((filter, index) => (
-                    <option key={index} value={filter}>{filter}</option>
-                ))}
-            </select>
-            <select onChange={e => changeFilter(e.target.value, 'transactionCategory')}>
-                {categoryFilter.map((filter, index) => (
-                    <option key={index} value={filter}>{filter}</option>
-                ))}
-            </select>
-            <select onChange={e => changeFilter(e.target.value, 'categoryType')}>
-                {categoryTypeFilter.map((filter, index) => (
-                    <option key={index} value={filter}>{filter}</option>
-                ))}
-            </select>
-            <select onChange={e => changeFilter(e.target.value, 'subCategoryType')}>
-                {categorySubTypeFilter.map((filter, index) => (
-                    <option key={index} value={filter}>{filter}</option>
-                ))}
-            </select>
+            <div className='input-group'>
+                <label htmlFor='transactionTypeInput'>Transaction type</label>
+                <select
+                    id='transactionTypeInput'
+                    onChange={e => changeFilter(e.target.value, 'transactionType')}
+                >
+                    {transactionTypeFilter.map((filter, index) => (
+                        <option key={index} value={filter}>{filter}</option>
+                    ))}
+                </select>
+            </div>
+            <div className='input-group'>
+                <label htmlFor='transactionCategory'>Transaction Category</label>
+                <select
+                    id="transactionCategory"
+                    onChange={e => changeFilter(e.target.value, 'transactionCategory')}
+                >
+                    {categoryFilter.map((filter, index) => (
+                        <option key={index} value={filter}>{filter}</option>
+                    ))}
+                </select>
+            </div>
+            <div className='input-group'>
+                <label htmlFor='categoryType'>Category Type</label>
+                <select
+                    id='categoryType'
+                    onChange={e => changeFilter(e.target.value, 'categoryType')}
+                >
+                    {categoryTypeFilter.map((filter, index) => (
+                        <option key={index} value={filter}>{filter}</option>
+                    ))}
+                </select>
+            </div>
+            <div className='input-group'>
+                <label htmlFor='subCategoryType'>Category Sub-Type</label>
+                <select
+                    id='subCategoryType'
+                    onChange={e => changeFilter(e.target.value, 'subCategoryType')}
+                >
+                    {categorySubTypeFilter.map((filter, index) => (
+                        <option key={index} value={filter}>{filter}</option>
+                    ))}
+                </select>
+            </div>
+
         </div>
     )
 }
