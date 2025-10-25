@@ -79,12 +79,18 @@ const MoneyInput: React.FC<MoneyInputProps> = ({ onChangeTransaction, isEditing 
                             Income Category
                         </label>
                         <input
+                            list='transactionCategoryList'
                             id="Category"
                             style={{ background: selectColor, color: 'black' }}
                             onChange={e => setTransactionCategory(e.target.value)}
                             value={transactionCategory}
                             placeholder={'Paycheck, Gift, etc.'}
                         />
+                        <datalist id='transactionCategoryList'>
+                            <option value='Paycheck'></option>
+                            <option value='Gift'></option>
+                            <option value='Random'></option>
+                        </datalist>
                     </div>
                 );
 
@@ -96,36 +102,51 @@ const MoneyInput: React.FC<MoneyInputProps> = ({ onChangeTransaction, isEditing 
                                 Expense Category
                             </label>
                             <input
+                                list='transactionCategoryList'
                                 id="Category"
                                 style={{ background: selectColor, color: 'black' }}
                                 onChange={e => setTransactionCategory(e.target.value)}
                                 value={transactionCategory}
                                 placeholder='Needs, Wants'
                             />
+                            <datalist id='transactionCategoryList'>
+                                <option value='Needs'></option>
+                                <option value='Wants'></option>
+                            </datalist>
                         </div>
                         <div className="input-group">
                             <label htmlFor="Type">
                                 Category Type
                             </label>
                             <input
+                                list='categoryTypeList'
                                 id="Type"
                                 style={{ background: selectColor, color: 'black' }}
                                 onChange={e => setCategoryType(e.target.value)}
                                 value={categoryType}
                                 placeholder='Food, Automotive, etc.'
                             />
+                            <datalist id='categoryTypeList'>
+                                <option value='Food'></option>
+                                <option value='Automotive'></option>
+                            </datalist>
                         </div>
                         <div className="input-group">
                             <label htmlFor="subType">
                                 Category Sub-Type
                             </label>
                             <input
+                                list='subCategoryTypeList'
                                 id="subType"
                                 style={{ background: selectColor, color: 'black' }}
                                 onChange={e => setSubCategoryType(e.target.value)}
                                 value={subCategoryType}
                                 placeholder='Restaurant, Gas, etc.'
                             />
+                            <datalist id='subCategoryTypeList'>
+                                <option value='Rstaurant'></option>
+                                <option value='Gas'></option>
+                            </datalist>
                         </div>
                     </>
                 );
