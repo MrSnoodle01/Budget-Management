@@ -1,13 +1,21 @@
 import { useState, useEffect } from "react"
 import type { TransactionType } from '../types/transaction';
+import type { FilterType } from '../types/filter';
 
 type MoneyInputProps = {
     onChangeTransaction?: (option: TransactionType[]) => void;
     isEditing?: boolean;
     editedTransaction?: TransactionType;
+    transactions?: TransactionType[];
 }
 
-const MoneyInput: React.FC<MoneyInputProps> = ({ onChangeTransaction, isEditing = false, editedTransaction = null }) => {
+type ExpenseType = {
+    transactionCategory: string[];
+    categoryType: string[];
+    subCategoryType: string[];
+}
+
+const MoneyInput: React.FC<MoneyInputProps> = ({ onChangeTransaction, isEditing = false, editedTransaction = null, transactions = [] }) => {
     const [selectColor, setSelectColor] = useState('#6d6d6dff');
     const [transactionType, setTransactionType] = useState('');
     const [transactionCategory, setTransactionCategory] = useState('');
@@ -15,6 +23,8 @@ const MoneyInput: React.FC<MoneyInputProps> = ({ onChangeTransaction, isEditing 
     const [subCategoryType, setSubCategoryType] = useState('');
     const [amount, setAmount] = useState(0);
     const [date, setDate] = useState('');
+    const [incomeCategories, setIncomeCategories] = useState<string[]>([]);
+    const [expenseCategories, setExpenseCategories] = useState<ExpenseType>();
 
     const token = localStorage.getItem("token");
     const API_URL = import.meta.env.VITE_API_URL;
@@ -37,6 +47,37 @@ const MoneyInput: React.FC<MoneyInputProps> = ({ onChangeTransaction, isEditing 
             }
         }
     }, [editedTransaction]);
+
+    useEffect(() => {
+        let tempIncomeCategories: string[] = ['Paycheck', 'Gift'];
+        let tempExpenseIncomeCategories: string[] = ['Needs', 'Wants'];
+        let tempExpenseCategoryTypes: string[] = [];
+        let tempExpenseSubCategoryTypes: string[] = [];
+        transactions.map(t => {
+            if (t.transactionType === "Expense") {
+                if (t.transactionCategory && !tempExpenseIncomeCategories.includes(t.transactionCategory)) {
+                    tempExpenseIncomeCategories.push(t.transactionCategory);
+                }
+                if (t.categoryType && !tempExpenseCategoryTypes.includes(t.categoryType)) {
+                    tempExpenseCategoryTypes.push(t.categoryType);
+                }
+                if (t.subCategoryType && !tempExpenseSubCategoryTypes.includes(t.subCategoryType)) {
+                    tempExpenseSubCategoryTypes.push(t.subCategoryType);
+                }
+            } else {
+                if (t.transactionCategory && !tempIncomeCategories.includes(t.transactionCategory)) {
+                    tempIncomeCategories.push(t.transactionCategory);
+                }
+            }
+        })
+
+        setExpenseCategories({
+            transactionCategory: tempExpenseIncomeCategories.sort(),
+            categoryType: tempExpenseCategoryTypes.sort(),
+            subCategoryType: tempExpenseSubCategoryTypes.sort()
+        })
+        setIncomeCategories(tempIncomeCategories.sort());
+    }, [])
 
     function handleTransactionTypeChange(e: React.ChangeEvent<HTMLSelectElement>) {
         const value = e.target.value;
@@ -87,11 +128,11 @@ const MoneyInput: React.FC<MoneyInputProps> = ({ onChangeTransaction, isEditing 
                             placeholder={'Paycheck, Gift, etc.'}
                         />
                         <datalist id='transactionCategoryList'>
-                            <option value='Paycheck'></option>
-                            <option value='Gift'></option>
-                            <option value='Random'></option>
+                            {incomeCategories.map((t) => {
+                                return <option value={t} ></option>
+                            })}
                         </datalist>
-                    </div>
+                    </div >
                 );
 
             case 'Expense':
@@ -110,8 +151,9 @@ const MoneyInput: React.FC<MoneyInputProps> = ({ onChangeTransaction, isEditing 
                                 placeholder='Needs, Wants'
                             />
                             <datalist id='transactionCategoryList'>
-                                <option value='Needs'></option>
-                                <option value='Wants'></option>
+                                {expenseCategories?.transactionCategory.map(t => {
+                                    return <option value={t}></option>
+                                })}
                             </datalist>
                         </div>
                         <div className="input-group">
@@ -127,8 +169,9 @@ const MoneyInput: React.FC<MoneyInputProps> = ({ onChangeTransaction, isEditing 
                                 placeholder='Food, Automotive, etc.'
                             />
                             <datalist id='categoryTypeList'>
-                                <option value='Food'></option>
-                                <option value='Automotive'></option>
+                                {expenseCategories?.categoryType.map(t => {
+                                    return <option value={t}></option>
+                                })}
                             </datalist>
                         </div>
                         <div className="input-group">
@@ -144,8 +187,9 @@ const MoneyInput: React.FC<MoneyInputProps> = ({ onChangeTransaction, isEditing 
                                 placeholder='Restaurant, Gas, etc.'
                             />
                             <datalist id='subCategoryTypeList'>
-                                <option value='Rstaurant'></option>
-                                <option value='Gas'></option>
+                                {expenseCategories?.subCategoryType.map(t => {
+                                    return <option value={t}></option>
+                                })}
                             </datalist>
                         </div>
                     </>

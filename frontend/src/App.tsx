@@ -86,7 +86,6 @@ function App() {
         const json = await res.json();
         setTransactions(json.transactions);
         setEmail(json.email);
-        console.log(json);
       } catch (error) {
         console.error("Error fetching transactions: ", error);
       } finally {
@@ -111,7 +110,7 @@ function App() {
               <button onClick={handleLogout}>logout</button>
             </div>
             <div className='middle-section'>
-              <MoneyInput onChangeTransaction={setTransactions} />
+              <MoneyInput onChangeTransaction={setTransactions} transactions={transactions} />
               <DisplayTransactions dateSelection={dateSelection} transactions={transactions} filter={filter} onChangeTransaction={setTransactions} />
             </div>
             <div className="right-section">
