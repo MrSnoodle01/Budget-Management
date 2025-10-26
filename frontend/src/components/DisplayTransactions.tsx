@@ -1,10 +1,11 @@
 import Transaction from './Transaction'
 import type { TransactionType } from '../types/transaction';
+import type { FilterType } from '../types/filter';
 
 type DisplayTransactionsProps = {
     dateSelection: string;
     transactions: TransactionType[];
-    filter: string;
+    filter: FilterType;
     onChangeTransaction: (option: TransactionType[]) => void;
 }
 
@@ -18,21 +19,26 @@ const DisplayTransactions: React.FC<DisplayTransactionsProps> = ({ dateSelection
     return (
         <div className='transaction-display'>
             {sortedData.map((transaction) => {
-                if (dateSelection === "" && filter === "All") {
+                let noFilter = Object.values(filter).every(value => value === 'All');
+
+                if (dateSelection === "" && noFilter) {
                     return <Transaction key={transaction.id} onChangeTransaction={onChangeTransaction} transaction={transaction} />
                 }
                 let transactionDate = new Date(transaction.date);
                 let transactionMonth = transactionDate.toLocaleString('default', { month: 'long' });
                 let transactionYear = transactionDate.getFullYear();
 
-                if (filter === "All") {
+                if (noFilter) {
                     if (dateSelection.split(" ")[1] === undefined && String(transactionYear) === dateSelection) { // sorting by year only
                         return <Transaction key={transaction.id} onChangeTransaction={onChangeTransaction} transaction={transaction} />
                     } else if (transactionMonth === dateSelection.split(" ")[0] && String(transactionYear) === dateSelection.split(" ")[1]) {
                         return <Transaction key={transaction.id} onChangeTransaction={onChangeTransaction} transaction={transaction} />
                     }
                 } else {
-                    const hasFilter = Object.values(transaction).some(value => String(value) === filter);
+                    const hasFilter = (filter.transactionType === 'All' || transaction.transactionType === filter.transactionType) &&
+                        (filter.transactionCategory === 'All' || transaction.transactionCategory === filter.transactionCategory) &&
+                        (filter.categoryType === 'All' || transaction.categoryType === filter.categoryType) &&
+                        (filter.subCategoryType === 'All' || transaction.subCategoryType === filter.subCategoryType);
                     if (dateSelection.split(" ")[1] === undefined && String(transactionYear) === dateSelection && hasFilter) { // sorting by year only
                         return <Transaction key={transaction.id} onChangeTransaction={onChangeTransaction} transaction={transaction} />
                     } else if (((transactionMonth === dateSelection.split(" ")[0] && String(transactionYear) === dateSelection.split(" ")[1]) || dateSelection === "") && hasFilter) {

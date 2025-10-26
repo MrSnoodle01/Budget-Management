@@ -6,12 +6,18 @@ import Graphs from './components/Graphs';
 import FilterSelection from './components/FilterSelection';
 import { useState, useEffect } from 'react';
 import type { TransactionType } from './types/transaction';
+import type { FilterType } from './types/filter';
 
 function App() {
   const [dateSelection, setDateSelection] = useState("");
   const [transactions, setTransactions] = useState<TransactionType[]>([])
   const [loading, setLoading] = useState(true);
-  const [filter, setFilter] = useState("All");
+  const [filter, setFilter] = useState<FilterType>({
+    transactionType: 'All',
+    transactionCategory: 'All',
+    categoryType: 'All',
+    subCategoryType: 'All'
+  });
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loggedIn, setLoggedIn] = useState(localStorage.getItem("token") != null);
@@ -80,7 +86,6 @@ function App() {
         const json = await res.json();
         setTransactions(json.transactions);
         setEmail(json.email);
-        console.log(json);
       } catch (error) {
         console.error("Error fetching transactions: ", error);
       } finally {
@@ -105,11 +110,11 @@ function App() {
               <button onClick={handleLogout}>logout</button>
             </div>
             <div className='middle-section'>
-              <MoneyInput onChangeTransaction={setTransactions} />
+              <MoneyInput onChangeTransaction={setTransactions} transactions={transactions} />
               <DisplayTransactions dateSelection={dateSelection} transactions={transactions} filter={filter} onChangeTransaction={setTransactions} />
             </div>
             <div className="right-section">
-              <Graphs dateSelection={dateSelection} transactions={transactions} />
+              <Graphs dateSelection={dateSelection} transactions={transactions} filter={filter} />
             </div>
           </>
         )
