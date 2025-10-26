@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react"
 import type { TransactionType } from '../types/transaction';
-import type { FilterType } from '../types/filter';
 
 type MoneyInputProps = {
     onChangeTransaction?: (option: TransactionType[]) => void;
@@ -77,7 +76,7 @@ const MoneyInput: React.FC<MoneyInputProps> = ({ onChangeTransaction, isEditing 
             subCategoryType: tempExpenseSubCategoryTypes.sort()
         })
         setIncomeCategories(tempIncomeCategories.sort());
-    }, [])
+    }, [transactions])
 
     function handleTransactionTypeChange(e: React.ChangeEvent<HTMLSelectElement>) {
         const value = e.target.value;
