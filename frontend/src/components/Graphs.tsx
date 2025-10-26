@@ -1,13 +1,15 @@
 import { PieChart } from '@mui/x-charts';
 import { useEffect, useState } from 'react';
 import type { TransactionType } from '../types/transaction';
+import type { FilterType } from '../types/filter';
 
 type GraphsProps = {
     dateSelection: string;
     transactions: TransactionType[];
+    filter: FilterType;
 }
 
-const Graphs: React.FC<GraphsProps> = ({ dateSelection, transactions }) => {
+const Graphs: React.FC<GraphsProps> = ({ dateSelection, transactions, filter }) => {
     const [wants, setWants] = useState(0);
     const [needs, setNeeds] = useState(0);
     const [savings, setSavings] = useState(0);
@@ -30,14 +32,20 @@ const Graphs: React.FC<GraphsProps> = ({ dateSelection, transactions }) => {
 
             // if dateYear is undefined then we are searching by year only, which gets put into dateMonth
             if ((transactionMonthName === dateMonth && String(transactionYear) === dateYear) || dateSelection === "" || (dateYear === undefined && String(transactionYear) === dateMonth)) {
-                if (e.transactionCategory === "Wants") {
-                    tempWants += e.amount;
-                } else if (e.transactionCategory === "Needs") {
-                    tempNeeds += e.amount;
-                } else if (e.transactionType === "Savings") {
-                    tempSavings += e.amount;
-                } else if (e.transactionType === "Income") {
-                    tempIncome += e.amount;
+                const hasFilter = (filter.transactionType === 'All' || e.transactionType === filter.transactionType) &&
+                    (filter.transactionCategory === 'All' || e.transactionCategory === filter.transactionCategory) &&
+                    (filter.categoryType === 'All' || e.categoryType === filter.categoryType) &&
+                    (filter.subCategoryType === 'All' || e.subCategoryType === filter.subCategoryType);
+                if (hasFilter) {
+                    if (e.transactionCategory === "Wants") {
+                        tempWants += e.amount;
+                    } else if (e.transactionCategory === "Needs") {
+                        tempNeeds += e.amount;
+                    } else if (e.transactionType === "Savings") {
+                        tempSavings += e.amount;
+                    } else if (e.transactionType === "Income") {
+                        tempIncome += e.amount;
+                    }
                 }
             }
         });
@@ -46,7 +54,7 @@ const Graphs: React.FC<GraphsProps> = ({ dateSelection, transactions }) => {
         setNeeds(parseFloat(tempNeeds.toFixed(2)));
         setSavings(parseFloat(tempSavings.toFixed(2)));
         setIncome(parseFloat(tempIncome.toFixed(2)));
-    }, [transactions, dateSelection]);
+    }, [transactions, dateSelection, filter]);
 
     return (
         <div className='graphs'>
