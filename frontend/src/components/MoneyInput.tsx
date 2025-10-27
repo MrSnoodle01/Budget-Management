@@ -48,34 +48,56 @@ const MoneyInput: React.FC<MoneyInputProps> = ({ onChangeTransaction, isEditing 
     }, [editedTransaction]);
 
     useEffect(() => {
-        let tempIncomeCategories: string[] = ['Paycheck', 'Gift'];
-        let tempExpenseIncomeCategories: string[] = ['Needs', 'Wants'];
-        let tempExpenseCategoryTypes: string[] = [];
-        let tempExpenseSubCategoryTypes: string[] = [];
+        const incomeMap = new Map<string, number>();
+        const expenseMap = new Map<string, number>();
+        const expenseCategoryMap = new Map<string, number>();
+        const expenseSubCategoryMap = new Map<string, number>();
+
         transactions.map(t => {
             if (t.transactionType === "Expense") {
-                if (t.transactionCategory && !tempExpenseIncomeCategories.includes(t.transactionCategory)) {
-                    tempExpenseIncomeCategories.push(t.transactionCategory);
+                const category = t.transactionCategory;
+                const categoryType = t.categoryType;
+                const subCategoryType = t.subCategoryType;
+
+                if (category) {
+                    if (!expenseMap.has(category)) {
+                        expenseMap.set(category, 0);
+                    } else if (expenseMap.has(category)) {
+                        expenseMap.set(category, (expenseMap.get(category) ?? 0) + 1)
+                    }
                 }
-                if (t.categoryType && !tempExpenseCategoryTypes.includes(t.categoryType)) {
-                    tempExpenseCategoryTypes.push(t.categoryType);
+                if (categoryType) {
+                    if (!expenseCategoryMap.has(categoryType)) {
+                        expenseCategoryMap.set(categoryType, 1);
+                    } else if (expenseCategoryMap.has(categoryType)) {
+                        expenseCategoryMap.set(categoryType, (expenseCategoryMap.get(categoryType) ?? 0) + 1)
+                    }
                 }
-                if (t.subCategoryType && !tempExpenseSubCategoryTypes.includes(t.subCategoryType)) {
-                    tempExpenseSubCategoryTypes.push(t.subCategoryType);
+                if (subCategoryType) {
+                    if (!expenseSubCategoryMap.has(subCategoryType)) {
+                        expenseSubCategoryMap.set(subCategoryType, 1);
+                    } else if (expenseSubCategoryMap.has(subCategoryType)) {
+                        expenseSubCategoryMap.set(subCategoryType, (expenseSubCategoryMap.get(subCategoryType) ?? 0) + 1)
+                    }
                 }
             } else {
-                if (t.transactionCategory && !tempIncomeCategories.includes(t.transactionCategory)) {
-                    tempIncomeCategories.push(t.transactionCategory);
+                const category = t.transactionCategory;
+                if (category) {
+                    if (!incomeMap.has(category)) {
+                        incomeMap.set(category, 0);
+                    } else if (incomeMap.has(category)) {
+                        incomeMap.set(category, (incomeMap.get(category) ?? 0) + 1)
+                    }
                 }
             }
         })
 
         setExpenseCategories({
-            transactionCategory: tempExpenseIncomeCategories.sort(),
-            categoryType: tempExpenseCategoryTypes.sort(),
-            subCategoryType: tempExpenseSubCategoryTypes.sort()
+            transactionCategory: Array.from(expenseMap.entries()).sort((a, b) => b[1] - a[1]).map(([key]) => key),
+            categoryType: Array.from(expenseCategoryMap.entries()).sort((a, b) => b[1] - a[1]).map(([key]) => key),
+            subCategoryType: Array.from(expenseSubCategoryMap.entries()).sort((a, b) => b[1] - a[1]).map(([key]) => key)
         })
-        setIncomeCategories(tempIncomeCategories.sort());
+        setIncomeCategories(Array.from(incomeMap.entries()).sort((a, b) => b[1] - a[1]).map(([key]) => key));
     }, [transactions])
 
     function handleTransactionTypeChange(e: React.ChangeEvent<HTMLSelectElement>) {
