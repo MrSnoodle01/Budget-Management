@@ -26,33 +26,18 @@ const FilterSelection: React.FC<FilterSelection> = ({ onChangeFilter, transactio
         let tempCategoryTypeFilters: string[] = ['All'];
         let tempCategorySubTypeFilters: string[] = ['All'];
 
-        let dateMonth = dateSelection.split(" ")[0];
-        let dateYear = dateSelection.split(" ")[1];
-
-        if (dateSelection.split(" ")[1] === undefined) { // if sorting by year only
-            dateMonth = "";
-            dateYear = dateSelection.split(" ")[0];
-        }
-
         transactions.forEach(e => {
-            let transactionDate = new Date(e.date);
-
-            let transactionMonthName = transactionDate.toLocaleString('default', { month: 'long' });
-            let transactionYear = transactionDate.getFullYear();
-
-            if (((transactionMonthName === dateMonth || dateMonth === "") && String(transactionYear) === dateYear) || dateSelection === "") {
-                if (!tempTransactionTypeFilters.includes(e.transactionType)) {
-                    tempTransactionTypeFilters.push(e.transactionType);
-                }
-                if (e.transactionCategory && !tempCategoryFilters.includes(e.transactionCategory)) {
-                    tempCategoryFilters.push(e.transactionCategory);
-                }
-                if (e.categoryType && !tempCategoryTypeFilters.includes(e.categoryType)) {
-                    tempCategoryTypeFilters.push(e.categoryType);
-                }
-                if (e.subCategoryType && !tempCategorySubTypeFilters.includes(e.subCategoryType)) {
-                    tempCategorySubTypeFilters.push(e.subCategoryType);
-                }
+            if (!tempTransactionTypeFilters.includes(e.transactionType)) {
+                tempTransactionTypeFilters.push(e.transactionType);
+            }
+            if (e.transactionCategory && !tempCategoryFilters.includes(e.transactionCategory)) {
+                tempCategoryFilters.push(e.transactionCategory);
+            }
+            if (e.categoryType && !tempCategoryTypeFilters.includes(e.categoryType)) {
+                tempCategoryTypeFilters.push(e.categoryType);
+            }
+            if (e.subCategoryType && !tempCategorySubTypeFilters.includes(e.subCategoryType)) {
+                tempCategorySubTypeFilters.push(e.subCategoryType);
             }
         })
 
@@ -104,8 +89,8 @@ const FilterSelection: React.FC<FilterSelection> = ({ onChangeFilter, transactio
                     id='transactionTypeInput'
                     onChange={e => changeFilter(e.target.value, 'transactionType')}
                 >
-                    {transactionTypeFilter.map((filter, index) => (
-                        <option key={index} value={filter}>{filter}</option>
+                    {transactionTypeFilter.map((filter) => (
+                        <option key={filter} value={filter}>{filter}</option>
                     ))}
                 </select>
             </div>
@@ -115,8 +100,8 @@ const FilterSelection: React.FC<FilterSelection> = ({ onChangeFilter, transactio
                     id="transactionCategory"
                     onChange={e => changeFilter(e.target.value, 'transactionCategory')}
                 >
-                    {categoryFilter.map((filter, index) => (
-                        <option key={index} value={filter}>{filter}</option>
+                    {categoryFilter.map((filter) => (
+                        <option key={filter} value={filter}>{filter}</option>
                     ))}
                 </select>
             </div>
@@ -126,8 +111,8 @@ const FilterSelection: React.FC<FilterSelection> = ({ onChangeFilter, transactio
                     id='categoryType'
                     onChange={e => changeFilter(e.target.value, 'categoryType')}
                 >
-                    {categoryTypeFilter.map((filter, index) => (
-                        <option key={index} value={filter}>{filter}</option>
+                    {categoryTypeFilter.map((filter) => (
+                        <option key={filter} value={filter}>{filter}</option>
                     ))}
                 </select>
             </div>
@@ -137,8 +122,8 @@ const FilterSelection: React.FC<FilterSelection> = ({ onChangeFilter, transactio
                     id='subCategoryType'
                     onChange={e => changeFilter(e.target.value, 'subCategoryType')}
                 >
-                    {categorySubTypeFilter.map((filter, index) => (
-                        <option key={index} value={filter}>{filter}</option>
+                    {categorySubTypeFilter.map((filter) => (
+                        <option key={filter} value={filter}>{filter}</option>
                     ))}
                 </select>
             </div>
