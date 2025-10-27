@@ -243,6 +243,15 @@ const MoneyInput: React.FC<MoneyInputProps> = ({ onChangeTransaction, isEditing 
         } catch (error) {
             console.error("Error updating resource:", error);
         }
+        resetFields();
+    }
+
+    function resetFields() {
+        setTransactionCategory('');
+        setCategoryType('');
+        setSubCategoryType('');
+        setAmount(0);
+        setDate('');
     }
 
     function editTransaction() {
