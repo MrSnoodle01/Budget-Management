@@ -65,7 +65,7 @@ const DateSortButtons: React.FC<DateSortButtonsProps> = ({ onDateSelectionChange
     }
 
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1px' }}>
+        <div className="date-sort-buttons">
             <button onClick={(() => handleClick(""))} style={{ backgroundColor: chosenOption === "" ? "#646cff" : "" }}>Show all months</button>
             {Object.keys(yearMonthMap)
                 .sort((a, b) => Number(b) - Number(a))

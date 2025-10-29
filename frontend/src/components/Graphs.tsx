@@ -1,4 +1,4 @@
-import { PieChart } from '@mui/x-charts';
+import { PieChart, pieArcLabelClasses } from '@mui/x-charts';
 import { useEffect, useState } from 'react';
 import type { TransactionType } from '../types/transaction';
 import type { FilterType } from '../types/filter';
@@ -14,6 +14,9 @@ const Graphs: React.FC<GraphsProps> = ({ dateSelection, transactions, filter }) 
     const [needs, setNeeds] = useState(0);
     const [savings, setSavings] = useState(0);
     const [income, setIncome] = useState(0);
+
+    const screenWidth: number = window.innerWidth;
+    const screenHeight: number = window.innerHeight;
 
     useEffect(() => {
         let tempWants = 0;
@@ -72,8 +75,13 @@ const Graphs: React.FC<GraphsProps> = ({ dateSelection, transactions, filter }) 
                         ],
                     },
                 ]}
-                width={350}
-                height={350}
+                width={screenWidth / 4}
+                height={screenHeight / 4}
+                sx={{
+                    [`& .${pieArcLabelClasses.root}`]: {
+                        fontSize: String(screenWidth / 100) + 'px',
+                    },
+                }}
             />
             <p>Spending for {dateSelection ? dateSelection : "all dates"}</p>
             {income > 0
@@ -92,8 +100,13 @@ const Graphs: React.FC<GraphsProps> = ({ dateSelection, transactions, filter }) 
                             ],
                         },
                     ]}
-                    width={350}
-                    height={350}
+                    width={screenWidth / 4}
+                    height={screenHeight / 4}
+                    sx={{
+                        [`& .${pieArcLabelClasses.root}`]: {
+                            fontSize: String(screenWidth / 100) + 'px',
+                        },
+                    }}
                 />
                 :
                 <PieChart

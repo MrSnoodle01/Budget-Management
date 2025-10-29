@@ -5,6 +5,17 @@
   text-align: center;
 }
 
+.date-sort-buttons {
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  max-height: 55vh;
+  width: 25vw;
+}
+
 .login-text {
   border-radius: 10px
 }
@@ -88,7 +99,7 @@
 
 .left-section {
   width: 20vw;
-  height: 30vh;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
