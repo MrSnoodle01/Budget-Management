@@ -4,6 +4,7 @@ import DisplayTransactions from './components/DisplayTransactions';
 import DateSortButtons from './components/DateSortButtons';
 import Graphs from './components/Graphs';
 import FilterSelection from './components/FilterSelection';
+import LineChart from './components/LineChart';
 import { useState, useEffect } from 'react';
 import type { TransactionType } from './types/transaction';
 import type { FilterType } from './types/filter';
@@ -112,6 +113,7 @@ function App() {
             <div className='middle-section'>
               <MoneyInput onChangeTransaction={setTransactions} transactions={transactions} />
               <DisplayTransactions dateSelection={dateSelection} transactions={transactions} filter={filter} onChangeTransaction={setTransactions} />
+              <LineChart transactions={transactions} filter={filter} />
             </div>
             <div className="right-section">
               <Graphs dateSelection={dateSelection} transactions={transactions} filter={filter} />

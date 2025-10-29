@@ -79,7 +79,7 @@ const Graphs: React.FC<GraphsProps> = ({ dateSelection, transactions, filter }) 
                 height={screenHeight / 3}
                 sx={{
                     [`& .${pieArcLabelClasses.root}`]: {
-                        fontSize: String(screenWidth / 100) + 'px',
+                        fontSize: String(screenWidth / 120) + 'px',
                     },
                 }}
             />
@@ -104,7 +104,7 @@ const Graphs: React.FC<GraphsProps> = ({ dateSelection, transactions, filter }) 
                     height={screenHeight / 3}
                     sx={{
                         [`& .${pieArcLabelClasses.root}`]: {
-                            fontSize: String(screenWidth / 100) + 'px',
+                            fontSize: String(screenWidth / 120) + 'px',
                         },
                     }}
                 />
@@ -122,12 +122,17 @@ const Graphs: React.FC<GraphsProps> = ({ dateSelection, transactions, filter }) 
                             ],
                         },
                     ]}
-                    width={350}
-                    height={350}
+                    width={screenWidth / 3}
+                    height={screenHeight / 3}
+                    sx={{
+                        [`& .${pieArcLabelClasses.root}`]: {
+                            fontSize: String(screenWidth / 120) + 'px',
+                        },
+                    }}
                 />
             }
             <p>
-                Needs: ${parseFloat((needs).toFixed(2))} Wants: ${parseFloat((wants).toFixed(2))} Savings: ${parseFloat((savings).toFixed(2))} Extra: ${parseFloat(((income - needs - wants - savings)).toFixed(2))}
+                Needs: ${parseFloat((needs).toFixed(2))} Wants: ${parseFloat((wants).toFixed(2))} Savings: ${parseFloat((savings).toFixed(2))} Total: ${parseFloat((needs).toFixed(2)) + parseFloat((wants).toFixed(2)) + parseFloat((savings).toFixed(2))} Extra: ${parseFloat(((income - needs - wants - savings)).toFixed(2))}
             </p>
         </div>
     )
