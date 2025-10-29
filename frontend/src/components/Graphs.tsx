@@ -75,8 +75,8 @@ const Graphs: React.FC<GraphsProps> = ({ dateSelection, transactions, filter }) 
                         ],
                     },
                 ]}
-                width={screenWidth / 4}
-                height={screenHeight / 4}
+                width={screenWidth / 3}
+                height={screenHeight / 3}
                 sx={{
                     [`& .${pieArcLabelClasses.root}`]: {
                         fontSize: String(screenWidth / 100) + 'px',
@@ -100,8 +100,8 @@ const Graphs: React.FC<GraphsProps> = ({ dateSelection, transactions, filter }) 
                             ],
                         },
                     ]}
-                    width={screenWidth / 4}
-                    height={screenHeight / 4}
+                    width={screenWidth / 3}
+                    height={screenHeight / 3}
                     sx={{
                         [`& .${pieArcLabelClasses.root}`]: {
                             fontSize: String(screenWidth / 100) + 'px',
