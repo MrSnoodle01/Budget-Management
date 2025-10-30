@@ -6,6 +6,7 @@ type MoneyInputProps = {
     isEditing?: boolean;
     editedTransaction?: TransactionType;
     transactions?: TransactionType[];
+    onClose?: () => void;
 }
 
 type ExpenseType = {
@@ -14,7 +15,7 @@ type ExpenseType = {
     subCategoryType: string[];
 }
 
-const MoneyInput: React.FC<MoneyInputProps> = ({ onChangeTransaction, isEditing = false, editedTransaction = null, transactions = [] }) => {
+const MoneyInput: React.FC<MoneyInputProps> = ({ onChangeTransaction, isEditing = false, editedTransaction = null, transactions = [], onClose }) => {
     const [selectColor, setSelectColor] = useState('#6d6d6dff');
     const [transactionType, setTransactionType] = useState('');
     const [transactionCategory, setTransactionCategory] = useState('');
@@ -304,6 +305,10 @@ const MoneyInput: React.FC<MoneyInputProps> = ({ onChangeTransaction, isEditing 
                 onChangeTransaction(updatedUser.transactions);
             }
         })
+
+        if (onClose) {
+            onClose();
+        }
     }
 
     return (

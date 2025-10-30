@@ -5,9 +5,10 @@ import type { TransactionType } from '../types/transaction';
 type TransactionProps = {
     transaction: TransactionType;
     onChangeTransaction: (option: TransactionType[]) => void;
+    transactions: TransactionType[];
 }
 
-const Transaction: React.FC<TransactionProps> = ({ transaction, onChangeTransaction }) => {
+const Transaction: React.FC<TransactionProps> = ({ transaction, onChangeTransaction, transactions }) => {
     const [backgroundColor, setBackgroundColor] = useState('')
     const [showEdit, setShowEdit] = useState(false)
 
@@ -80,7 +81,7 @@ const Transaction: React.FC<TransactionProps> = ({ transaction, onChangeTransact
                 <button onClick={() => setShowEdit(true)} className="edit-delete-buttons">Edit</button>
                 <button onClick={deleteTransaction} className="edit-delete-buttons">Delete</button>
             </div>
-            <EditModal isOpen={showEdit} onClose={() => setShowEdit(false)} editedTransaction={transaction} onChangeTransaction={onChangeTransaction} />
+            <EditModal isOpen={showEdit} onClose={() => setShowEdit(false)} editedTransaction={transaction} onChangeTransaction={onChangeTransaction} transactions={transactions} />
         </div>
     )
 }
