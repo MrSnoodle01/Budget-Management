@@ -224,13 +224,12 @@ const MoneyInput: React.FC<MoneyInputProps> = ({ onChangeTransaction, isEditing 
     async function addTransaction() {
         let dateId = new Date()
 
-        if (transactionType != "Savings" && transactionType != "Investing") {
-            if (transactionType === '' || date === '' || amount <= 0) {
+        if (transactionType === "Savings" || transactionType === "Investing") {
+            if (date === '' || amount <= 0) {
                 alert("Please input all required categories");
                 return;
             }
-        }
-        if (transactionType === '' || transactionCategory === '' || date === '' || amount <= 0) {
+        } else if (transactionType === '' || transactionCategory === '' || date === '' || amount <= 0) {
             alert("Please input all required categories");
             return;
         }

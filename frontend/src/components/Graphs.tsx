@@ -61,7 +61,7 @@ const Graphs: React.FC<GraphsProps> = ({ dateSelection, transactions, filter }) 
 
     return (
         <div className='graphs'>
-            <p>Current budgeting Method</p>
+            <p>Suggested budgeting Method</p>
             <PieChart
                 series={[
                     {
