@@ -10,6 +10,7 @@ from datetime import timedelta
 from flask_cors import CORS
 from dotenv import load_dotenv
 import os
+import requests
 
 load_dotenv()
 
@@ -118,6 +119,17 @@ class registerUser(Resource):
         data = request.get_json()
         email = data.get("email")
         password = data.get("password")
+        recaptcha_token = data.get("recaptcha_token")
+
+        recaptcha_secret = os.getenv("RECAPTCHA_SECRET_KEY")
+        verification = requests.post(
+            "https://www.google.com/recaptcha/api/siteverify",
+            data={"secret": recaptcha_secret, "response": recaptcha_token}
+        )
+        result = verification.json()
+
+        if not result.get("success"):
+            abort(400, message="reCAPTCHA failed. Please try again")
 
         if UserModel.query.filter_by(email=email).first():
             abort(400, message="Email already exists")

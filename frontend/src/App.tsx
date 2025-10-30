@@ -1,4 +1,5 @@
 import './App.css';
+import ReCAPTCHA from "react-google-recaptcha";
 import MoneyInput from './components/MoneyInput';
 import DisplayTransactions from './components/DisplayTransactions';
 import DateSortButtons from './components/DateSortButtons';
@@ -22,6 +23,7 @@ function App() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loggedIn, setLoggedIn] = useState(localStorage.getItem("token") != null);
+  const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
 
   const token = localStorage.getItem("token");
   const API_URL = import.meta.env.VITE_API_URL;
@@ -50,10 +52,15 @@ function App() {
   async function handleRegisterUser(e: React.FormEvent) {
     e.preventDefault();
 
+    if (!recaptchaToken) {
+      alert("Please complete the CAPTCHA first");
+      return;
+    }
+
     const res = await fetch(API_URL + "/api/registerUser", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({ email, password, recaptcha_token: recaptchaToken }),
     });
 
     if (!res.ok) {
@@ -94,7 +101,9 @@ function App() {
       }
     };
 
-    fetchData();
+    if (loggedIn) {
+      fetchData();
+    }
   }, [loggedIn]);
 
   return (
@@ -122,6 +131,7 @@ function App() {
         )
       ) : (
         <div className="login-page">
+          <h1>Budget Tracker</h1>
           <div className="login-input">
             <p>Email: </p>
             <input
@@ -142,6 +152,7 @@ function App() {
               className="login-text"
             />
           </div>
+          <ReCAPTCHA sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY} onChange={(token) => setRecaptchaToken(token)} />
           <button onClick={handleLogin}> Log In </button>
           <button onClick={handleRegisterUser}> Sign up </button>
         </div>
