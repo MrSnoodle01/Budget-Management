@@ -98,7 +98,7 @@ const LineChart: React.FC<LineChartProps> = ({ transactions, filter }) => {
         const allMonths = Object.values(sortedMap).flat();
 
         setYearMonthMap(allMonths);
-    }, [transactions])
+    }, [transactions, filter])
 
     return (
         <XLineChart
