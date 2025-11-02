@@ -107,6 +107,18 @@ Expects a json body with
 }
 ```
 
+Returns a json with user information and new access_token
+```
+{
+    "access_token": token,
+    "user":{
+        "id": user.id,
+        "username": user.username,
+        "email": user.email,
+    }
+}
+```
+
 ## POST /api/login
 
 Logs in a user based on email and password

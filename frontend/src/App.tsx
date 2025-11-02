@@ -25,11 +25,12 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(localStorage.getItem("token") != null);
   const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
 
-  const token = localStorage.getItem("token");
   const API_URL = import.meta.env.VITE_API_URL;
 
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
+
+    setLoading(true);
 
     const res = await fetch(API_URL + "/api/login", {
       method: "POST",
@@ -44,8 +45,13 @@ function App() {
 
     const data = await res.json();
 
-    localStorage.setItem("token", data.access_token);
-    setLoggedIn(true);
+    if (data.access_token) {
+      localStorage.setItem("token", data.access_token);
+      setLoggedIn(true);
+    } else {
+      throw new Error("No access token reutrned from API (login)");
+    }
+
     return data.user;
   }
 
@@ -57,22 +63,35 @@ function App() {
       return;
     }
 
-    const res = await fetch(API_URL + "/api/registerUser", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password, recaptcha_token: recaptchaToken }),
-    });
+    setLoading(true);
 
-    if (!res.ok) {
-      alert("Email is already in use");
-      throw new Error("Email is already in use");
+    try {
+      const res = await fetch(API_URL + "/api/registerUser", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password, recaptcha_token: recaptchaToken }),
+      });
+
+      if (!res.ok) {
+        alert("Email is already in use");
+        throw new Error("Email is already in use");
+      }
+
+      const data = await res.json();
+
+      if (data.access_token) {
+        localStorage.setItem("token", data.access_token);
+        setLoggedIn(true);
+      } else {
+        throw new Error("No access token returned from API (registration)");
+      }
+
+      return data.user;
+    } catch (err) {
+      console.error("Error registering user: ", err);
+    } finally {
+      setLoading(false);
     }
-
-    const data = await res.json();
-
-    localStorage.setItem("token", data.access_token);
-    setLoggedIn(true);
-    return data.user;
   }
 
   function handleLogout() {
@@ -82,7 +101,15 @@ function App() {
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       try {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          console.warn("No token found in localStorage before fetch");
+          setLoggedIn(false);
+          setLoading(false);
+          return;
+        }
         const res = await fetch(API_URL + '/api/getUserTransactions', {
           headers: {
             'Authorization': `Bearer ${token}`
@@ -96,8 +123,9 @@ function App() {
         setEmail(json.email);
       } catch (error) {
         console.error("Error fetching transactions: ", error);
+        setLoggedIn(false);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
     };
 
@@ -108,7 +136,7 @@ function App() {
 
   return (
     <div className='page'>
-      {localStorage.getItem("token") != null ? (
+      {loggedIn ? (
         loading ? (
           <p>Loading...</p>
         ) : (
