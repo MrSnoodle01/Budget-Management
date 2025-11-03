@@ -66,7 +66,10 @@ class addTransaction(Resource):
 class getUserTransactions(Resource):
     @jwt_required()
     def get(self):
-        user_id = get_jwt_identity()
+        try:
+            user_id = get_jwt_identity()
+        except Exception as e:
+            return {"error": "Invalid or missing token"}, 401
         user = UserModel.query.filter_by(id=user_id).first()
 
         if not user:
@@ -138,7 +141,17 @@ class registerUser(Resource):
         new_user = UserModel(username=email, email=email, password=hashed_password, transactions=[])
         db.session.add(new_user)
         db.session.commit()
-        return{"message": "User registered successfully"}, 200
+
+        user = UserModel.query.filter_by(email=email).first()
+        token = create_access_token(identity=str(user.id), expires_delta=timedelta(hours=2))
+        return{
+            "access_token": token,
+            "user":{
+                "id": user.id,
+                "username": user.username,
+                "email": user.email,
+            }
+        }, 200
 
 class login(Resource):
     def post(self):
