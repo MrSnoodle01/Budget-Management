@@ -143,17 +143,17 @@ const LineChart: React.FC<LineChartProps> = ({ transactions, filter }) => {
                 {
                     label: 'Spending',
                     data: monthlySpending,
-                    color: '#ff7676ff',
+                    color: '#FF6B6B',
                 },
                 {
                     label: 'Earnings',
                     data: monthlyEarnings,
-                    color: '#91ff83ff',
+                    color: '#82ff71ff',
                 },
                 {
                     label: 'Savings',
                     data: monthlySavings,
-                    color: '#d4d235ff',
+                    color: '#FFE66D',
                 },
             ]}
             width={screenWidth / 1.75}

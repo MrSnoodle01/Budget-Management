@@ -69,9 +69,9 @@ const Graphs: React.FC<GraphsProps> = ({ dateSelection, transactions, filter }) 
                         arcLabelMinAngle: 35,
                         arcLabelRadius: '50%',
                         data: [
-                            { id: 'Needs', value: 50, color: 'green' },
-                            { id: 'Wants', value: 30, color: 'red' },
-                            { id: 'Savings', value: 20, color: 'yellow' },
+                            { id: 'Needs', value: 50, color: '#82ff71ff' },
+                            { id: 'Wants', value: 30, color: '#FF6B6B' },
+                            { id: 'Savings', value: 20, color: '#FFE66D' },
                         ],
                     },
                 ]}
@@ -93,9 +93,9 @@ const Graphs: React.FC<GraphsProps> = ({ dateSelection, transactions, filter }) 
                             arcLabelMinAngle: 10,
                             arcLabelRadius: '50%',
                             data: [
-                                { id: 'Needs', value: parseFloat((needs / income * 100).toFixed(2)), color: 'green' },
-                                { id: 'Wants', value: parseFloat((wants / income * 100).toFixed(2)), color: 'red' },
-                                { id: 'Savings', value: parseFloat((savings / income * 100).toFixed(2)), color: 'yellow' },
+                                { id: 'Needs', value: parseFloat((needs / income * 100).toFixed(2)), color: '#82ff71ff' },
+                                { id: 'Wants', value: parseFloat((wants / income * 100).toFixed(2)), color: '#FF6B6B' },
+                                { id: 'Savings', value: parseFloat((savings / income * 100).toFixed(2)), color: '#FFE66D' },
                                 { id: 'Extra', value: parseFloat(((income - needs - wants - savings) / income * 100).toFixed(2)), color: 'gray' },
                             ],
                         },
@@ -116,9 +116,9 @@ const Graphs: React.FC<GraphsProps> = ({ dateSelection, transactions, filter }) 
                             arcLabelMinAngle: 10,
                             arcLabelRadius: '50%',
                             data: [
-                                { id: 'Needs', value: parseFloat((needs).toFixed(2)), color: 'green' },
-                                { id: 'Wants', value: parseFloat((wants).toFixed(2)), color: 'red' },
-                                { id: 'Savings', value: parseFloat((savings).toFixed(2)), color: 'yellow' },
+                                { id: 'Needs', value: parseFloat((needs).toFixed(2)), color: '#82ff71ff' },
+                                { id: 'Wants', value: parseFloat((wants).toFixed(2)), color: '#FF6B6B' },
+                                { id: 'Savings', value: parseFloat((savings).toFixed(2)), color: '#FFE66D' },
                             ],
                         },
                     ]}

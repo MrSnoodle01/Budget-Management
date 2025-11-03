@@ -18,13 +18,13 @@ const Transaction: React.FC<TransactionProps> = ({ transaction, onChangeTransact
     useEffect(() => {
         switch (transaction.transactionType) {
             case "Income":
-                setBackgroundColor('#91ff83ff');
+                setBackgroundColor('#82ff71ff');
                 break;
             case "Expense":
-                setBackgroundColor('#ff7676ff');
+                setBackgroundColor('#FF6B6B');
                 break;
             default:
-                setBackgroundColor('#d4d235ff');
+                setBackgroundColor('#FFE66D');
                 break;
         }
     }, [])
