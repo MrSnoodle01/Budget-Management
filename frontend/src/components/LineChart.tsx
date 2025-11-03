@@ -32,6 +32,19 @@ const LineChart: React.FC<LineChartProps> = ({ transactions, filter }) => {
     const screenWidth: number = window.innerWidth;
     const screenHeight: number = window.innerHeight;
 
+    // returns a sorted array of transaction amounts based on the month and year
+    function sortTransactionsByDate(tempRecord: Record<string, number>): number[] {
+        const sortedArr: string[] = (Object.keys(tempRecord).sort((a, b) => {
+            const [monthA, yearA] = a.split(" ");
+            const [monthB, yearB] = b.split(" ");
+            if (Number(yearA) === Number(yearB)) {
+                return monthMap[monthA] - monthMap[monthB];
+            }
+            return Number(yearA) - Number(yearB);
+        }));
+        return sortedArr.filter(date => tempRecord[date] !== undefined).map(date => tempRecord[date]);
+    }
+
     useEffect(() => {
         let tempMap: Record<string, Set<string>> = {};
         let tempSpending: Record<string, number> = {};
@@ -58,11 +71,9 @@ const LineChart: React.FC<LineChartProps> = ({ transactions, filter }) => {
             if (!tempSavings[fullDate]) {
                 tempSavings[fullDate] = 0;
             }
-
             if (!tempEarnings[fullDate]) {
                 tempEarnings[fullDate] = 0;
             }
-
 
             const hasFilter = (filter.transactionType === 'All' || e.transactionType === filter.transactionType) &&
                 (filter.transactionCategory === 'All' || e.transactionCategory === filter.transactionCategory) &&
@@ -78,11 +89,12 @@ const LineChart: React.FC<LineChartProps> = ({ transactions, filter }) => {
                 }
             }
         })
-        setMonthlyEarnings(Object.values(tempEarnings).flat().reverse());
-        setMonthlySavings(Object.values(tempSavings).flat().reverse());
-        setMonthlySpending(Object.values(tempSpending).flat().reverse());
 
-        // convert to sorted object
+        setMonthlyEarnings(sortTransactionsByDate(tempEarnings));
+        setMonthlySavings(sortTransactionsByDate(tempSavings));
+        setMonthlySpending(sortTransactionsByDate(tempSpending));
+
+        // convert months to sorted object
         const sortedMap: Record<string, string[]> = {};
         const sortedYears = Object.keys(tempMap).sort((a, b) => Number(b) - Number(a));
 
@@ -106,7 +118,13 @@ const LineChart: React.FC<LineChartProps> = ({ transactions, filter }) => {
                 {
                     scaleType: 'band',
                     data: yearMonthMap,
-                    tickLabelStyle: { fill: '#ccc' },
+                    valueFormatter: (value) => {
+                        const [month, year] = value.split(' ');
+                        return `${month.slice(0, 3)} ${year}`;
+                    },
+                    tickLabelStyle: {
+                        fill: '#ccc',
+                    },
                 },
             ]}
             yAxis={[
