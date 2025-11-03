@@ -39,10 +39,11 @@ export default function LoginPage({ API_URL, setLoggedIn }: LoginPageProps) {
             <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" />
             <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
             <button onClick={handleLogin}>Log In</button>
-            <p>
+            <p className="login-page">
                 Don't have an account?
                 <button onClick={() => navigate("/signup")}>Sign up</button>
             </p>
+
         </div>
     )
 }

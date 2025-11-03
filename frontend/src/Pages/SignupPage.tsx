@@ -21,6 +21,16 @@ export default function SignupPage({ API_URL, setLoggedIn }: SignupPageProps) {
             return;
         }
 
+        if (!email) {
+            alert("Please enter an email");
+            return;
+        }
+
+        if (!password) {
+            alert("Please enter a password");
+            return;
+        }
+
         const res = await fetch(API_URL + "/api/registerUser", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -47,10 +57,11 @@ export default function SignupPage({ API_URL, setLoggedIn }: SignupPageProps) {
             <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
             <ReCAPTCHA sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY} onChange={setRecaptchaToken} />
             <button onClick={handleRegister}>Register</button>
-            <p>
+            <p className="signup-page">
                 Already have an account?
                 <button onClick={() => navigate("/login")}>Log in</button>
             </p>
+
         </div>
     )
 }

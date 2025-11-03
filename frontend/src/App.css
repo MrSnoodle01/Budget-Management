@@ -16,18 +16,14 @@
   width: 25vw;
 }
 
-.login-text {
-  border-radius: 10px
-}
-
-.login-input {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 10px;
-}
-
 .login-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px
+}
+
+.signup-page {
   display: flex;
   flex-direction: column;
   align-items: center;
