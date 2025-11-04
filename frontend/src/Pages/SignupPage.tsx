@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import ReCAPTCHA from 'react-google-recaptcha';
 import { useNavigate } from 'react-router-dom';
+import './LoginPage.css';
 
 type SignupPageProps = {
     API_URL: string;
@@ -51,17 +52,50 @@ export default function SignupPage({ API_URL, setLoggedIn }: SignupPageProps) {
     }
 
     return (
-        <div className="signup-page">
-            <h1>Sign Up</h1>
-            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" />
-            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
-            <ReCAPTCHA sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY} onChange={setRecaptchaToken} />
-            <button onClick={handleRegister}>Register</button>
-            <p className="signup-page">
-                Already have an account?
-                <button onClick={() => navigate("/login")}>Log in</button>
-            </p>
+        <div className="login-container">
+            <div className="login-card">
+                <h1 className="login-title">Sign up</h1>
 
+                <form onSubmit={handleRegister}>
+                    <input
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="Email"
+                        className="login-input"
+                        required
+                    />
+                    <input
+                        type="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        placeholder="Password"
+                        className="login-input"
+                        required
+                    />
+                    <div className="captcha-container">
+                        <ReCAPTCHA
+                            sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
+                            onChange={setRecaptchaToken}
+                        />
+                    </div>
+
+                    <button type="submit" className="login-button">
+                        Sign up
+                    </button>
+                </form>
+
+                <p className="signup-text">
+                    Already have an account?
+                    <button
+                        type="button"
+                        className="signup-button"
+                        onClick={() => navigate("/login")}
+                    >
+                        Login
+                    </button>
+                </p>
+            </div>
         </div>
-    )
+    );
 }
