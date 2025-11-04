@@ -16,20 +16,6 @@
   width: 25vw;
 }
 
-.login-page {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px
-}
-
-.signup-page {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px
-}
-
 .edit-delete-buttons {
   background-color: transparent;
   padding: 0;
