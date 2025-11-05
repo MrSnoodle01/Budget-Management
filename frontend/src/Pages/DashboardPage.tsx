@@ -56,23 +56,25 @@ export default function dashboardPage({ API_URL, onLogout }: DashboardPageProps)
     }, []);
 
     return (
-        <div className='page'>
-            <>
+        <>
+            <div className='top-section'>
+                <MoneyInput onChangeTransaction={setTransactions} transactions={transactions} />
+            </div>
+            <div className='bottom-section'>
                 <div className="left-section">
                     <DateSortButtons onDateSelectionChange={setDateSelection} transactions={transactions} />
                     <FilterSelection onChangeFilter={setFilter} transactions={transactions} dateSelection={dateSelection} />
-                    <p>Logged in as {email}</p>
+                    <p style={{ margin: 0 }}>Logged in as {email}</p>
                     <button onClick={onLogout}>logout</button>
                 </div>
                 <div className='middle-section'>
-                    <MoneyInput onChangeTransaction={setTransactions} transactions={transactions} />
                     <DisplayTransactions dateSelection={dateSelection} transactions={transactions} filter={filter} onChangeTransaction={setTransactions} />
                     <LineChart transactions={transactions} filter={filter} />
                 </div>
                 <div className="right-section">
                     <Graphs dateSelection={dateSelection} transactions={transactions} filter={filter} />
                 </div>
-            </>
-        </div>
+            </div>
+        </>
     )
 }

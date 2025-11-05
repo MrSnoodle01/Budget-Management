@@ -82,7 +82,7 @@ const FilterSelection: React.FC<FilterSelection> = ({ onChangeFilter, transactio
 
     return (
         <div>
-            <p>Filter by: </p>
+            <p style={{ margin: 0 }}>Filter by: </p>
             <div className='input-group'>
                 <label htmlFor='transactionTypeInput'>Transaction type</label>
                 <select
