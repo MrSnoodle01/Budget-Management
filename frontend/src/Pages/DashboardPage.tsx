@@ -64,8 +64,7 @@ export default function dashboardPage({ API_URL, onLogout }: DashboardPageProps)
                 <div className="left-section">
                     <DateSortButtons onDateSelectionChange={setDateSelection} transactions={transactions} />
                     <FilterSelection onChangeFilter={setFilter} transactions={transactions} dateSelection={dateSelection} />
-                    <p style={{ margin: 0 }}>Logged in as {email}</p>
-                    <button onClick={onLogout}>logout</button>
+
                 </div>
                 <div className='middle-section'>
                     <DisplayTransactions dateSelection={dateSelection} transactions={transactions} filter={filter} onChangeTransaction={setTransactions} />
@@ -73,8 +72,12 @@ export default function dashboardPage({ API_URL, onLogout }: DashboardPageProps)
                 </div>
                 <div className="right-section">
                     <Graphs dateSelection={dateSelection} transactions={transactions} filter={filter} />
+                    <div style={{ marginTop: '45%' }}>
+                        <p>Logged in as {email}</p>
+                        <button onClick={onLogout}>logout</button>
+                    </div >
                 </div>
-            </div>
+            </div >
         </>
     )
 }
