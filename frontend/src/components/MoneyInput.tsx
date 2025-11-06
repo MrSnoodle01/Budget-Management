@@ -144,7 +144,7 @@ const MoneyInput: React.FC<MoneyInputProps> = ({ onChangeTransaction, isEditing 
                         <input
                             list='transactionCategoryList'
                             id="Category"
-                            style={{ background: selectColor, color: 'black' }}
+                            style={{ background: selectColor, color: 'black', borderRadius: '6px' }}
                             onChange={e => setTransactionCategory(e.target.value)}
                             value={transactionCategory}
                             placeholder={'Paycheck, Gift, etc.'}
@@ -167,7 +167,7 @@ const MoneyInput: React.FC<MoneyInputProps> = ({ onChangeTransaction, isEditing 
                             <input
                                 list='transactionCategoryList'
                                 id="Category"
-                                style={{ background: selectColor, color: 'black' }}
+                                style={{ background: selectColor, color: 'black', borderRadius: '6px' }}
                                 onChange={e => setTransactionCategory(e.target.value)}
                                 value={transactionCategory}
                                 placeholder='Needs, Wants'
@@ -185,7 +185,7 @@ const MoneyInput: React.FC<MoneyInputProps> = ({ onChangeTransaction, isEditing 
                             <input
                                 list='categoryTypeList'
                                 id="Type"
-                                style={{ background: selectColor, color: 'black' }}
+                                style={{ background: selectColor, color: 'black', borderRadius: '6px' }}
                                 onChange={e => setCategoryType(e.target.value)}
                                 value={categoryType}
                                 placeholder='Food, Automotive, etc.'
@@ -203,7 +203,7 @@ const MoneyInput: React.FC<MoneyInputProps> = ({ onChangeTransaction, isEditing 
                             <input
                                 list='subCategoryTypeList'
                                 id="subType"
-                                style={{ background: selectColor, color: 'black' }}
+                                style={{ background: selectColor, color: 'black', borderRadius: '6px' }}
                                 onChange={e => setSubCategoryType(e.target.value)}
                                 value={subCategoryType}
                                 placeholder='Restaurant, Gas, etc.'
@@ -317,7 +317,7 @@ const MoneyInput: React.FC<MoneyInputProps> = ({ onChangeTransaction, isEditing 
                     Transaction Type
                 </label>
                 <select
-                    style={{ background: selectColor, color: 'black' }}
+                    style={{ background: selectColor, color: 'black', borderRadius: '6px' }}
                     id="input-type"
                     value={transactionType}
                     onChange={handleTransactionTypeChange}
@@ -339,7 +339,7 @@ const MoneyInput: React.FC<MoneyInputProps> = ({ onChangeTransaction, isEditing 
                     type='number'
                     placeholder='Amount'
                     value={amount === 0 ? '' : amount}
-                    style={{ background: selectColor, color: 'black' }}
+                    style={{ background: selectColor, color: 'black', borderRadius: '6px' }}
                     onChange={e => setAmount(Number(e.target.value))}
                 />
             </div>
@@ -350,7 +350,7 @@ const MoneyInput: React.FC<MoneyInputProps> = ({ onChangeTransaction, isEditing 
                 <input
                     id="date"
                     type='date'
-                    style={{ background: selectColor, color: 'black' }}
+                    style={{ background: selectColor, color: 'black', borderRadius: '6px' }}
                     value={date ? new Date(date).toISOString().split('T')[0] : ''}
                     onChange={handleDateChange}
                 />

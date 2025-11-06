@@ -61,7 +61,7 @@ const Graphs: React.FC<GraphsProps> = ({ dateSelection, transactions, filter }) 
 
     return (
         <div className='graphs'>
-            <p>Suggested budgeting Method</p>
+            {/* <p style={{ margin: 0 }}>Suggested budgeting Method</p>
             <PieChart
                 series={[
                     {
@@ -82,8 +82,8 @@ const Graphs: React.FC<GraphsProps> = ({ dateSelection, transactions, filter }) 
                         fontSize: String(screenWidth / 120) + 'px',
                     },
                 }}
-            />
-            <p>Spending for {dateSelection ? dateSelection : "all dates"}</p>
+            /> */}
+            <p style={{ margin: 0 }}>Spending for {dateSelection ? dateSelection : "all dates"}</p>
             {income > 0
                 ?
                 <PieChart
@@ -131,8 +131,12 @@ const Graphs: React.FC<GraphsProps> = ({ dateSelection, transactions, filter }) 
                     }}
                 />
             }
-            <p>
-                Needs: ${parseFloat((needs).toFixed(2))} Wants: ${parseFloat((wants).toFixed(2))} Savings: ${parseFloat((savings).toFixed(2))} Total: ${(parseFloat((needs).toFixed(2)) + parseFloat((wants).toFixed(2)) + parseFloat((savings).toFixed(2))).toFixed(2)} Extra: ${parseFloat(((income - needs - wants - savings)).toFixed(2))}
+            <p style={{ margin: 0 }}>
+                Needs: ${parseFloat((needs).toFixed(2))} <br />
+                Wants: ${parseFloat((wants).toFixed(2))} <br />
+                Savings: ${parseFloat((savings).toFixed(2))} <br />
+                Total: ${(parseFloat((needs).toFixed(2)) + parseFloat((wants).toFixed(2)) + parseFloat((savings).toFixed(2))).toFixed(2)} <br />
+                Extra: ${parseFloat(((income - needs - wants - savings)).toFixed(2))}<br />
             </p>
         </div>
     )

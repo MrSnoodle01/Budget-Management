@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import "./LoginPage.css";
 
 type LoginPageProps = {
     API_URL: string;
     setLoggedIn: (value: boolean) => void;
-}
+};
 
 export default function LoginPage({ API_URL, setLoggedIn }: LoginPageProps) {
     const [email, setEmail] = useState("");
@@ -34,16 +35,43 @@ export default function LoginPage({ API_URL, setLoggedIn }: LoginPageProps) {
     }
 
     return (
-        <div className="login-page">
-            <h1>Login</h1>
-            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" />
-            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
-            <button onClick={handleLogin}>Log In</button>
-            <p className="login-page">
-                Don't have an account?
-                <button onClick={() => navigate("/signup")}>Sign up</button>
-            </p>
+        <div className="login-container">
+            <div className="login-card">
+                <h1 className="login-title">Login</h1>
 
+                <form onSubmit={handleLogin}>
+                    <input
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="Email"
+                        className="login-input"
+                        required
+                    />
+                    <input
+                        type="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        placeholder="Password"
+                        className="login-input"
+                        required
+                    />
+                    <button type="submit" className="login-button">
+                        Log In
+                    </button>
+                </form>
+
+                <p className="signup-text">
+                    Don’t have an account?
+                    <button
+                        type="button"
+                        className="signup-button"
+                        onClick={() => navigate("/signup")}
+                    >
+                        Sign up
+                    </button>
+                </p>
+            </div>
         </div>
-    )
+    );
 }

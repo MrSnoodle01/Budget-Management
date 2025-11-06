@@ -1,7 +1,6 @@
 #root {
   max-width: 100%;
   margin: 0 auto;
-  padding: 1rem;
   text-align: center;
 }
 
@@ -12,22 +11,8 @@
   flex-direction: column;
   align-items: center;
   gap: 1px;
-  max-height: 55vh;
-  width: 25vw;
-}
-
-.login-page {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px
-}
-
-.signup-page {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px
+  max-height: 45vh;
+  width: 20vw;
 }
 
 .edit-delete-buttons {
@@ -60,11 +45,16 @@
   flex-direction: column;
   text-align: center;
   gap: 1vh;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
 }
 
 .graphs {
   width: 100%;
-  height: 100%;
+  height: 50%;
+  margin-top: 30%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .transaction-display {
@@ -75,20 +65,14 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-
-.page {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 95vw;
-  height: 95vh;
+  margin-top: 10px;
 }
 
 .right-section {
   width: 20vw;
-  height: 100%;
+  height: 87.5vh;
   display: flex;
+  flex-direction: column;
   align-items: center;
   overflow-y: hidden;
   overflow-x: hidden;
@@ -96,11 +80,11 @@
 
 .left-section {
   width: 20vw;
-  height: 100%;
+  height: 87.5vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: top;
 }
 
 .middle-section {
@@ -109,7 +93,25 @@
   flex-direction: column;
   gap: 10px;
   width: 60vw;
-  height: 95vh;
+  height: 87.5vh;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+  border-radius: 16px;
+}
+
+.top-section {
+  height: 7.5vh;
+  width: 95vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bottom-section {
+  display: flex;
+  flex: 1;
+  justify-content: space-between;
+  padding: 10px;
+  width: 95vw;
 }
 
 .input-group {
