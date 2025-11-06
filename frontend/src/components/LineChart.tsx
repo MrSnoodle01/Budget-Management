@@ -90,9 +90,9 @@ const LineChart: React.FC<LineChartProps> = ({ transactions, filter }) => {
             }
         })
 
-        setMonthlyEarnings(sortTransactionsByDate(tempEarnings));
-        setMonthlySavings(sortTransactionsByDate(tempSavings));
-        setMonthlySpending(sortTransactionsByDate(tempSpending));
+        setMonthlyEarnings(sortTransactionsByDate(tempEarnings).slice(-13).slice(-13));
+        setMonthlySavings(sortTransactionsByDate(tempSavings).slice(-13));
+        setMonthlySpending(sortTransactionsByDate(tempSpending).slice(-13));
 
         // convert months to sorted object
         const sortedMap: Record<string, string[]> = {};
@@ -108,8 +108,9 @@ const LineChart: React.FC<LineChartProps> = ({ transactions, filter }) => {
         });
 
         const allMonths = Object.values(sortedMap).flat();
+        console.log(allMonths);
 
-        setYearMonthMap(allMonths);
+        setYearMonthMap(allMonths.slice(-13));
     }, [transactions, filter])
 
     return (
