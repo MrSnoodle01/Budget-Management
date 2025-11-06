@@ -11,7 +11,7 @@
   flex-direction: column;
   align-items: center;
   gap: 1px;
-  max-height: 40vh;
+  max-height: 45vh;
   width: 25vw;
 }
 
@@ -45,6 +45,7 @@
   flex-direction: column;
   text-align: center;
   gap: 1vh;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
 }
 
 .graphs {
@@ -68,6 +69,7 @@
 
 .right-section {
   width: 20vw;
+  height: 87.5vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -77,6 +79,7 @@
 
 .left-section {
   width: 20vw;
+  height: 87.5vh;
   display: flex;
   flex-direction: column;
   align-items: center;

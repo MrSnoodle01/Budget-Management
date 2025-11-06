@@ -64,7 +64,6 @@ export default function dashboardPage({ API_URL, onLogout }: DashboardPageProps)
                 <div className="left-section">
                     <DateSortButtons onDateSelectionChange={setDateSelection} transactions={transactions} />
                     <FilterSelection onChangeFilter={setFilter} transactions={transactions} dateSelection={dateSelection} />
-
                 </div>
                 <div className='middle-section'>
                     <DisplayTransactions dateSelection={dateSelection} transactions={transactions} filter={filter} onChangeTransaction={setTransactions} />
