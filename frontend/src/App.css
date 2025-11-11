@@ -82,6 +82,7 @@
   align-items: center;
   overflow-y: hidden;
   overflow-x: hidden;
+  flex-shrink: 0;
 }
 
 .left-section {
@@ -90,7 +91,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: top;
+  flex-shrink: 0;
 }
 
 .middle-section {
@@ -116,8 +117,7 @@
   display: flex;
   flex: 1;
   justify-content: space-between;
-  padding: 10px;
-  width: 95vw;
+  width: 100vw;
 }
 
 .input-group {

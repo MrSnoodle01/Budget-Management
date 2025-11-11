@@ -27,6 +27,9 @@ export default function dashboardPage({ API_URL, onLogout }: DashboardPageProps)
 
     useEffect(() => {
         const fetchData = async () => {
+
+            document.body.style.cursor = "wait";
+
             try {
                 const token = localStorage.getItem("token");
                 if (!token) {
@@ -49,6 +52,8 @@ export default function dashboardPage({ API_URL, onLogout }: DashboardPageProps)
                 setEmail(json.email);
             } catch (error) {
                 console.error("Error fetching transactions: ", error);
+            } finally {
+                document.body.style.cursor = "default";
             }
         };
 
