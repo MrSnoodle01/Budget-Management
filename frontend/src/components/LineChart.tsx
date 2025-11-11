@@ -6,6 +6,8 @@ import type { FilterType } from '../types/filter';
 type LineChartProps = {
     transactions: TransactionType[];
     filter: FilterType;
+    width: number;
+    height: number;
 };
 
 const monthMap: Record<string, number> = {
@@ -23,14 +25,11 @@ const monthMap: Record<string, number> = {
     December: 11,
 };
 
-const LineChart: React.FC<LineChartProps> = ({ transactions, filter }) => {
+const LineChart: React.FC<LineChartProps> = ({ transactions, filter, width, height }) => {
     const [yearMonthMap, setYearMonthMap] = useState<string[]>([]);
     const [monthlySpending, setMonthlySpending] = useState<number[]>([]);
     const [monthlyEarnings, setMonthlyEarnings] = useState<number[]>([]);
     const [monthlySavings, setMonthlySavings] = useState<number[]>([]);
-
-    const screenWidth: number = window.innerWidth;
-    const screenHeight: number = window.innerHeight;
 
     // returns a sorted array of transaction amounts based on the month and year
     function sortTransactionsByDate(tempRecord: Record<string, number>): number[] {
@@ -108,7 +107,6 @@ const LineChart: React.FC<LineChartProps> = ({ transactions, filter }) => {
         });
 
         const allMonths = Object.values(sortedMap).flat();
-        console.log(allMonths);
 
         setYearMonthMap(allMonths.slice(-12));
     }, [transactions, filter])
@@ -158,8 +156,8 @@ const LineChart: React.FC<LineChartProps> = ({ transactions, filter }) => {
                         color: '#FFE66D',
                     },
                 ]}
-                width={screenWidth / 1.75}
-                height={screenHeight / 3}
+                width={width}
+                height={height}
             />
         </div>
     )

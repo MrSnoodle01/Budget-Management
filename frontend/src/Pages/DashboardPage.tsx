@@ -25,6 +25,9 @@ export default function dashboardPage({ API_URL, onLogout }: DashboardPageProps)
     });
     const [email, setEmail] = useState("");
 
+    const screenWidth: number = window.innerWidth;
+    const screenHeight: number = window.innerHeight;
+
     useEffect(() => {
         const fetchData = async () => {
 
@@ -72,7 +75,7 @@ export default function dashboardPage({ API_URL, onLogout }: DashboardPageProps)
                 </div>
                 <div className='middle-section'>
                     <DisplayTransactions dateSelection={dateSelection} transactions={transactions} filter={filter} onChangeTransaction={setTransactions} />
-                    <LineChart transactions={transactions} filter={filter} />
+                    <LineChart transactions={transactions} filter={filter} width={screenWidth / 1.75} height={screenHeight / 3} />
                 </div>
                 <div className="right-section">
                     <Graphs dateSelection={dateSelection} transactions={transactions} filter={filter} />
