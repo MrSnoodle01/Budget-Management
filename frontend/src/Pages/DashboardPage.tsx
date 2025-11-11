@@ -79,9 +79,9 @@ export default function dashboardPage({ API_URL, onLogout }: DashboardPageProps)
                     <div style={{ marginTop: '45%' }}>
                         <p>Logged in as {email}</p>
                         <button onClick={onLogout}>logout</button>
-                    </div >
+                    </div>
                 </div>
-            </div >
+            </div>
         </>
     )
 }
