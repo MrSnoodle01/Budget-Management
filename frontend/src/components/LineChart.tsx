@@ -114,52 +114,54 @@ const LineChart: React.FC<LineChartProps> = ({ transactions, filter }) => {
     }, [transactions, filter])
 
     return (
-        <XLineChart
-            xAxis={[
-                {
-                    scaleType: 'band',
-                    data: yearMonthMap,
-                    valueFormatter: (value) => {
-                        const [month, year] = value.split(' ');
-                        return `${month.slice(0, 3)} ${year}`;
+        <div className='line-chart'>
+            <XLineChart
+                xAxis={[
+                    {
+                        scaleType: 'band',
+                        data: yearMonthMap,
+                        valueFormatter: (value) => {
+                            const [month, year] = value.split(' ');
+                            return `${month.slice(0, 3)} ${year}`;
+                        },
+                        tickLabelStyle: {
+                            fill: '#ccc',
+                        },
                     },
-                    tickLabelStyle: {
-                        fill: '#ccc',
+                ]}
+                yAxis={[
+                    {
+                        tickLabelStyle: { fill: '#ccc' },
                     },
-                },
-            ]}
-            yAxis={[
-                {
-                    tickLabelStyle: { fill: '#ccc' },
-                },
-            ]}
-            slotProps={{
-                legend: {
-                    sx: {
-                        color: '#ccc',
+                ]}
+                slotProps={{
+                    legend: {
+                        sx: {
+                            color: '#ccc',
+                        },
                     },
-                },
-            }}
-            series={[
-                {
-                    label: 'Spending',
-                    data: monthlySpending,
-                    color: '#FF6B6B',
-                },
-                {
-                    label: 'Earnings',
-                    data: monthlyEarnings,
-                    color: '#82ff71ff',
-                },
-                {
-                    label: 'Savings',
-                    data: monthlySavings,
-                    color: '#FFE66D',
-                },
-            ]}
-            width={screenWidth / 1.75}
-            height={screenHeight / 3}
-        />
+                }}
+                series={[
+                    {
+                        label: 'Spending',
+                        data: monthlySpending,
+                        color: '#FF6B6B',
+                    },
+                    {
+                        label: 'Earnings',
+                        data: monthlyEarnings,
+                        color: '#82ff71ff',
+                    },
+                    {
+                        label: 'Savings',
+                        data: monthlySavings,
+                        color: '#FFE66D',
+                    },
+                ]}
+                width={screenWidth / 1.75}
+                height={screenHeight / 3}
+            />
+        </div>
     )
 };
 
