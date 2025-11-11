@@ -15,11 +15,15 @@ export default function LoginPage({ API_URL, setLoggedIn }: LoginPageProps) {
     async function handleLogin(e: React.FormEvent) {
         e.preventDefault();
 
+        document.body.style.cursor = "wait";
+
         const res = await fetch(API_URL + "/api/login", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email, password }),
         });
+
+        document.body.style.cursor = "default";
 
         if (!res.ok) {
             alert("Email or password is incorrect");

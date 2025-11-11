@@ -234,6 +234,8 @@ const MoneyInput: React.FC<MoneyInputProps> = ({ onChangeTransaction, isEditing 
             return;
         }
 
+        document.body.style.cursor = "wait";
+
         try {
             const res = await fetch(API_URL + "/api/addTransaction", {
                 method: "PATCH",
@@ -264,6 +266,8 @@ const MoneyInput: React.FC<MoneyInputProps> = ({ onChangeTransaction, isEditing 
             console.log("Transaction added successfully");
         } catch (error) {
             console.error("Error updating resource:", error);
+        } finally {
+            document.body.style.cursor = "default";
         }
         resetFields();
     }

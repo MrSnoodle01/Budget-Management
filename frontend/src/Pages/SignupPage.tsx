@@ -32,11 +32,15 @@ export default function SignupPage({ API_URL, setLoggedIn }: SignupPageProps) {
             return;
         }
 
+        document.body.style.cursor = "wait";
+
         const res = await fetch(API_URL + "/api/registerUser", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email, password, recaptcha_token: recaptchaToken }),
         });
+
+        document.body.style.cursor = "default";
 
         if (!res.ok) {
             alert("Email is already in use");
