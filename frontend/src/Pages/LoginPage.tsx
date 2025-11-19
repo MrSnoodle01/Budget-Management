@@ -139,6 +139,5 @@ export default function LoginPage({ API_URL, setLoggedIn }: LoginPageProps) {
                 </div>
             </div>
         </div>
-
     );
 }
