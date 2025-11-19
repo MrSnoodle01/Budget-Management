@@ -129,7 +129,7 @@ const LineChart: React.FC<LineChartProps> = ({ transactions, filter, width, heig
                 ]}
                 yAxis={[
                     {
-                        tickLabelStyle: { fill: '#ccc' },
+                        tickLabelStyle: { fill: '#ccc', fontSize: '11.25px' },
                     },
                 ]}
                 slotProps={{

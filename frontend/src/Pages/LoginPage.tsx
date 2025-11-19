@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { PieChart, pieArcLabelClasses } from '@mui/x-charts';
 import LineChart from "../components/LineChart";
+import DateSortButtons from "../components/DateSortButtons";
+import FilterSelection from "../components/FilterSelection";
 import { tempData } from "../assets/tempData";
 import type { FilterType } from "../types/filter";
 import "./LoginPage.css";
@@ -59,7 +61,9 @@ export default function LoginPage({ API_URL, setLoggedIn }: LoginPageProps) {
     return (
         <div className="bottom-section">
             <div className="left-container">
-                <p>Easily filter by date or by category of transaction</p>
+                <h2>Easily filter by date or by category</h2>
+                <DateSortButtons onDateSelectionChange={() => null} transactions={tempData} />
+                <FilterSelection onChangeFilter={() => null} transactions={tempData} />
             </div>
             <div className="login-container">
                 <div className="login-card">
@@ -100,9 +104,7 @@ export default function LoginPage({ API_URL, setLoggedIn }: LoginPageProps) {
                 </div>
             </div>
             <div className="right-container">
-                <p>
-                    Graphs to easily show your monthly spending
-                </p>
+                <h2>Graphs to show monthly spending</h2>
                 <div className="graphs">
                     <PieChart
                         series={[

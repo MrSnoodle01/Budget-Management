@@ -79,7 +79,7 @@ export default function dashboardPage({ API_URL, onLogout }: DashboardPageProps)
                 </div>
                 <div className="right-section">
                     <Graphs dateSelection={dateSelection} transactions={transactions} filter={filter} />
-                    <div style={{ marginTop: '45%' }}>
+                    <div style={{ marginTop: '65%' }}>
                         <p>Logged in as {email}</p>
                         <button onClick={onLogout}>logout</button>
                     </div>
