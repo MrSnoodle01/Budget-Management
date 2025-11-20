@@ -25,8 +25,14 @@ export default function dashboardPage({ API_URL, onLogout }: DashboardPageProps)
     });
     const [email, setEmail] = useState("");
 
+    const screenWidth: number = window.innerWidth;
+    const screenHeight: number = window.innerHeight;
+
     useEffect(() => {
         const fetchData = async () => {
+
+            document.body.style.cursor = "wait";
+
             try {
                 const token = localStorage.getItem("token");
                 if (!token) {
@@ -49,6 +55,8 @@ export default function dashboardPage({ API_URL, onLogout }: DashboardPageProps)
                 setEmail(json.email);
             } catch (error) {
                 console.error("Error fetching transactions: ", error);
+            } finally {
+                document.body.style.cursor = "default";
             }
         };
 
@@ -63,20 +71,20 @@ export default function dashboardPage({ API_URL, onLogout }: DashboardPageProps)
             <div className='bottom-section'>
                 <div className="left-section">
                     <DateSortButtons onDateSelectionChange={setDateSelection} transactions={transactions} />
-                    <FilterSelection onChangeFilter={setFilter} transactions={transactions} dateSelection={dateSelection} />
+                    <FilterSelection onChangeFilter={setFilter} transactions={transactions} />
                 </div>
                 <div className='middle-section'>
                     <DisplayTransactions dateSelection={dateSelection} transactions={transactions} filter={filter} onChangeTransaction={setTransactions} />
-                    <LineChart transactions={transactions} filter={filter} />
+                    <LineChart transactions={transactions} filter={filter} width={screenWidth / 1.75} height={screenHeight / 3} />
                 </div>
                 <div className="right-section">
                     <Graphs dateSelection={dateSelection} transactions={transactions} filter={filter} />
-                    <div style={{ marginTop: '45%' }}>
+                    <div style={{ marginTop: '65%' }}>
                         <p>Logged in as {email}</p>
                         <button onClick={onLogout}>logout</button>
-                    </div >
+                    </div>
                 </div>
-            </div >
+            </div>
         </>
     )
 }

@@ -4,6 +4,12 @@
   text-align: center;
 }
 
+.line-chart {
+  display: flex;
+  flex-direction: column;
+  margin-top: auto;
+}
+
 .date-sort-buttons {
   overflow-y: auto;
   overflow-x: hidden;
@@ -51,7 +57,6 @@
 .graphs {
   width: 100%;
   height: 50%;
-  margin-top: 30%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -76,6 +81,7 @@
   align-items: center;
   overflow-y: hidden;
   overflow-x: hidden;
+  flex-shrink: 0;
 }
 
 .left-section {
@@ -84,7 +90,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: top;
+  flex-shrink: 0;
 }
 
 .middle-section {
@@ -100,7 +106,7 @@
 
 .top-section {
   height: 7.5vh;
-  width: 95vw;
+  width: 100vw;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -110,8 +116,7 @@
   display: flex;
   flex: 1;
   justify-content: space-between;
-  padding: 10px;
-  width: 95vw;
+  width: 100vw;
 }
 
 .input-group {

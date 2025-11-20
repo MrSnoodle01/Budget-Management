@@ -5,10 +5,9 @@ import type { FilterType } from '../types/filter';
 type FilterSelection = {
     onChangeFilter: (option: FilterType) => void;
     transactions: TransactionType[];
-    dateSelection: string;
 }
 
-const FilterSelection: React.FC<FilterSelection> = ({ onChangeFilter, transactions, dateSelection }) => {
+const FilterSelection: React.FC<FilterSelection> = ({ onChangeFilter, transactions }) => {
     const [transactionTypeFilter, setTransactionTypeFilter] = useState<string[]>([]);
     const [categoryFilter, setCategoryFilter] = useState<string[]>([]);
     const [categoryTypeFilter, setCategoryTypeFilter] = useState<string[]>([]);
@@ -45,9 +44,38 @@ const FilterSelection: React.FC<FilterSelection> = ({ onChangeFilter, transactio
         setCategoryFilter([tempCategoryFilters[0], ...tempCategoryFilters.slice(1).sort()]);
         setCategoryTypeFilter([tempCategoryTypeFilters[0], ...tempCategoryTypeFilters.slice(1).sort()]);
         setCategorySubTypeFilter([tempCategorySubTypeFilters[0], ...tempCategorySubTypeFilters.slice(1).sort()]);
-    }, [dateSelection, transactions]);
+    }, [transactions]);
 
     useEffect(() => {
+        let tempTransactionTypeFilters: string[] = ['All'];
+        let tempCategoryFilters: string[] = ['All'];
+        let tempCategoryTypeFilters: string[] = ['All'];
+        let tempCategorySubTypeFilters: string[] = ['All'];
+
+        transactions.forEach(e => {
+            // variables for if the current filter and transaction have same filters
+            let sameTransactionType = currentFilter.transactionType === e.transactionType || currentFilter.transactionType === 'All';
+            let sameTransactionCategory = currentFilter.transactionCategory === e.transactionCategory || currentFilter.transactionCategory === 'All';
+            let sameCategoryType = currentFilter.categoryType === e.categoryType || currentFilter.categoryType === 'All';
+
+            if (!tempTransactionTypeFilters.includes(e.transactionType)) {
+                tempTransactionTypeFilters.push(e.transactionType);
+            }
+            if (e.transactionCategory && !tempCategoryFilters.includes(e.transactionCategory) && sameTransactionType) {
+                tempCategoryFilters.push(e.transactionCategory);
+            }
+            if (e.categoryType && !tempCategoryTypeFilters.includes(e.categoryType) && sameTransactionType && sameTransactionCategory) {
+                tempCategoryTypeFilters.push(e.categoryType);
+            }
+            if (e.subCategoryType && !tempCategorySubTypeFilters.includes(e.subCategoryType) && sameTransactionType && sameTransactionCategory && sameCategoryType) {
+                tempCategorySubTypeFilters.push(e.subCategoryType);
+            }
+        })
+
+        setTransactionTypeFilter([tempTransactionTypeFilters[0], ...tempTransactionTypeFilters.slice(1).sort()]);
+        setCategoryFilter([tempCategoryFilters[0], ...tempCategoryFilters.slice(1).sort()]);
+        setCategoryTypeFilter([tempCategoryTypeFilters[0], ...tempCategoryTypeFilters.slice(1).sort()]);
+        setCategorySubTypeFilter([tempCategorySubTypeFilters[0], ...tempCategorySubTypeFilters.slice(1).sort()]);
         onChangeFilter(currentFilter);
     }, [currentFilter])
 
