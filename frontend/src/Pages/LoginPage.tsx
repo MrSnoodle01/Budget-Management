@@ -66,6 +66,9 @@ export default function LoginPage({ API_URL, setLoggedIn }: LoginPageProps) {
                 <FilterSelection onChangeFilter={() => null} transactions={tempData} />
             </div>
             <div className="login-container">
+                <h1 style={{ marginBottom: '10vh' }}>
+                    Budget Buddy
+                </h1>
                 <div className="login-card">
                     <h1 className="login-title">Login</h1>
 

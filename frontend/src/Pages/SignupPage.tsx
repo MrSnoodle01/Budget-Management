@@ -84,6 +84,9 @@ export default function SignupPage({ API_URL, setLoggedIn }: SignupPageProps) {
                 <FilterSelection onChangeFilter={() => null} transactions={tempData} />
             </div>
             <div className="login-container">
+                <h1 style={{ marginBottom: '10vh' }}>
+                    Budget Buddy
+                </h1>
                 <div className="login-card">
                     <h1 className="login-title">Sign up</h1>
 
