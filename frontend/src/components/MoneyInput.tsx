@@ -157,6 +157,49 @@ const MoneyInput: React.FC<MoneyInputProps> = ({ onChangeTransaction, isEditing 
                     </div >
                 );
 
+            case 'Investing':
+                return (
+                    <>
+                        <div className="input-group">
+                            <label htmlFor="Category">
+                                Investing Category
+                            </label>
+                            <input
+                                list='transactionCategoryList'
+                                id="Category"
+                                style={{ background: selectColor, color: 'black', borderRadius: '6px' }}
+                                onChange={e => setTransactionCategory(e.target.value)}
+                                value={transactionCategory}
+                                placeholder={'401k, Stock market, etc.'}
+                            />
+                            <datalist id='transactionCategoryList'>
+                                {incomeCategories.map((t) => {
+                                    return <option value={t} ></option>
+                                })}
+                            </datalist>
+                        </div >
+                        <div className="input-group">
+                            <label htmlFor="Type">
+                                Category Type
+                            </label>
+                            <input
+                                list='categoryTypeList'
+                                id="Type"
+                                style={{ background: selectColor, color: 'black', borderRadius: '6px' }}
+                                onChange={e => setCategoryType(e.target.value)}
+                                value={categoryType}
+                                placeholder='S&P 500, Nvidia, etc.'
+                            />
+                            <datalist id='categoryTypeList'>
+                                {expenseCategories?.categoryType.map(t => {
+                                    return <option value={t}></option>
+                                })}
+                            </datalist>
+                        </div>
+                    </>
+
+                );
+
             case 'Expense':
                 return (
                     <>
@@ -247,8 +290,8 @@ const MoneyInput: React.FC<MoneyInputProps> = ({ onChangeTransaction, isEditing 
                     transactions: [{
                         id: dateId.getTime(),
                         transactionType: capitalizeWords(transactionType),
-                        transactionCategory: transactionType === "Income" || transactionType === "Expense" ? capitalizeWords(transactionCategory) : '',
-                        categoryType: transactionType === "Expense" ? capitalizeWords(categoryType) : '',
+                        transactionCategory: transactionType === "Income" || transactionType === "Expense" || transactionType === "Investing" ? capitalizeWords(transactionCategory) : '',
+                        categoryType: transactionType === "Expense" || transactionType === "Investing" ? capitalizeWords(categoryType) : '',
                         subCategoryType: transactionType === "Expense" ? capitalizeWords(subCategoryType) : '',
                         amount,
                         date,
@@ -330,6 +373,7 @@ const MoneyInput: React.FC<MoneyInputProps> = ({ onChangeTransaction, isEditing 
                     <option value="Income">Income</option>
                     <option value="Expense">Expense</option>
                     <option value="Savings">Savings</option>
+                    <option value="Investing">Investing</option>
                 </select>
             </div>
             {options()}
