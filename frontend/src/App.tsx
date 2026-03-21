@@ -14,6 +14,8 @@ function App() {
   const [loggedIn, setLoggedIn] = useState<boolean>(false);
 
   useEffect(() => {
+    fetch(API_URL + "/api/health").catch(() => { }); // ping backend as front end loads
+
     const token = localStorage.getItem("token");
     if (!token) {
       return;
