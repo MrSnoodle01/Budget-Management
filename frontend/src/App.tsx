@@ -14,7 +14,12 @@ function App() {
   const [loggedIn, setLoggedIn] = useState<boolean>(false);
 
   useEffect(() => {
-    fetch(API_URL + "/api/health").catch(() => { }); // ping backend as front end loads
+    fetch("https://budget.koyeb.app/api/health", { // ping backend when first loading site
+      method: "GET",
+      credentials: "include",
+    }).catch((err) => {
+      console.error("Health check failed:", err);
+    });
 
     const token = localStorage.getItem("token");
     if (!token) {
