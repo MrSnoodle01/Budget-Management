@@ -30,6 +30,7 @@ const LineChart: React.FC<LineChartProps> = ({ transactions, filter, width, heig
     const [monthlySpending, setMonthlySpending] = useState<number[]>([]);
     const [monthlyEarnings, setMonthlyEarnings] = useState<number[]>([]);
     const [monthlySavings, setMonthlySavings] = useState<number[]>([]);
+    const [monthlyInvesting, setMonthlyInvesting] = useState<number[]>([]);
 
     // returns a sorted array of transaction amounts based on the month and year
     function sortTransactionsByDate(tempRecord: Record<string, number>): number[] {
@@ -49,6 +50,7 @@ const LineChart: React.FC<LineChartProps> = ({ transactions, filter, width, heig
         let tempSpending: Record<string, number> = {};
         let tempEarnings: Record<string, number> = {};
         let tempSavings: Record<string, number> = {};
+        let tempInvesting: Record<string, number> = {};
 
         // get all unique transaction dates
         transactions.forEach(e => {
@@ -73,6 +75,9 @@ const LineChart: React.FC<LineChartProps> = ({ transactions, filter, width, heig
             if (!tempEarnings[fullDate]) {
                 tempEarnings[fullDate] = 0;
             }
+            if (!tempInvesting[fullDate]) {
+                tempInvesting[fullDate] = 0;
+            }
 
             const hasFilter = (filter.transactionType === 'All' || e.transactionType === filter.transactionType) &&
                 (filter.transactionCategory === 'All' || e.transactionCategory === filter.transactionCategory) &&
@@ -85,6 +90,8 @@ const LineChart: React.FC<LineChartProps> = ({ transactions, filter, width, heig
                     tempSavings[fullDate] += e.amount;
                 } else if (e.transactionType === "Income") {
                     tempEarnings[fullDate] += e.amount;
+                } else if (e.transactionType === "Investing") {
+                    tempInvesting[fullDate] += e.amount;
                 }
             }
         })
@@ -92,6 +99,7 @@ const LineChart: React.FC<LineChartProps> = ({ transactions, filter, width, heig
         setMonthlyEarnings(sortTransactionsByDate(tempEarnings).slice(-12).slice(-12));
         setMonthlySavings(sortTransactionsByDate(tempSavings).slice(-12));
         setMonthlySpending(sortTransactionsByDate(tempSpending).slice(-12));
+        setMonthlyInvesting(sortTransactionsByDate(tempInvesting).slice(-12));
 
         // convert months to sorted object
         const sortedMap: Record<string, string[]> = {};
@@ -154,6 +162,11 @@ const LineChart: React.FC<LineChartProps> = ({ transactions, filter, width, heig
                         label: 'Savings',
                         data: monthlySavings,
                         color: '#FFE66D',
+                    },
+                    {
+                        label: 'Investing',
+                        data: monthlyInvesting,
+                        color: '#4D96FF'
                     },
                 ]}
                 width={width}

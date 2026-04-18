@@ -108,6 +108,8 @@ const MoneyInput: React.FC<MoneyInputProps> = ({ onChangeTransaction, isEditing 
             setSelectColor('#91ff83ff');
         } else if (value === "Expense") {
             setSelectColor('#ff7676ff');
+        } else if (value === 'Investing') {
+            setSelectColor('#4D96FF');
         } else {
             setSelectColor('#d4d235ff');
         }

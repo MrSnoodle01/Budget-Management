@@ -23,6 +23,9 @@ const Transaction: React.FC<TransactionProps> = ({ transaction, onChangeTransact
             case "Expense":
                 setBackgroundColor('#FF6B6B');
                 break;
+            case "Investing":
+                setBackgroundColor('#4D96FF');
+                break;
             default:
                 setBackgroundColor('#FFE66D');
                 break;
