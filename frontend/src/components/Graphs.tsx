@@ -194,7 +194,7 @@ const Graphs: React.FC<GraphsProps> = ({ dateSelection, transactions, filter }) 
                     Wants: ${parseFloat((wants).toFixed(2))} <br />
                     Savings: ${parseFloat((savings).toFixed(2))} <br />
                     Investing: ${parseFloat((investing).toFixed(2))} <br />
-                    Total: ${(parseFloat((needs).toFixed(2)) + parseFloat((wants).toFixed(2)) + parseFloat((savings).toFixed(2))).toFixed(2)} <br />
+                    Total: ${(parseFloat((needs).toFixed(2)) + parseFloat((wants).toFixed(2)) + parseFloat((savings).toFixed(2))).toFixed(2) + parseFloat((investing).toFixed(2))} <br />
                     Extra: ${parseFloat(((income - needs - wants - savings - investing)).toFixed(2))}<br />
                 </p>
                 :
