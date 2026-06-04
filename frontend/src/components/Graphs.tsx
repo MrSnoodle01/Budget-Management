@@ -152,7 +152,7 @@ const Graphs: React.FC<GraphsProps> = ({ dateSelection, transactions, filter }) 
                                     { id: 'Needs', value: parseFloat((needs).toFixed(2)), color: '#82ff71ff', label: 'Needs' },
                                     { id: 'Wants', value: parseFloat((wants).toFixed(2)), color: '#FF6B6B', label: 'Wants' },
                                     { id: 'Savings', value: parseFloat((savings).toFixed(2)), color: '#FFE66D', label: 'Savings' },
-                                    { id: 'Investing', value: parseFloat((investing / income * 100).toFixed(2)), color: '#4D96FF', label: 'Investing' },
+                                    { id: 'Investing', value: parseFloat((investing).toFixed(2)), color: '#4D96FF', label: 'Investing' },
                                 ],
                             },
                         ]}
