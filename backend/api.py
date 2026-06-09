@@ -6,6 +6,8 @@ from flask_login import LoginManager, login_user, login_required, logout_user, c
 from sqlalchemy.types import JSON
 from sqlalchemy.ext.mutable import MutableList
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
+from sqlalchemy import text
+from sqlalchemy.exc import OperationalError
 from datetime import timedelta
 from flask_cors import CORS
 from dotenv import load_dotenv
@@ -21,8 +23,9 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
 app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
     "pool_pre_ping": True,
-    "pool_recycle": 300,
+    "pool_recycle": 60,
 }
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db = SQLAlchemy(app)
 api = Api(app)
@@ -43,6 +46,7 @@ def serve(path):
 
 @app.route("/api/health", methods=["GET"])
 def health():
+    db.session.execute(text("SELECT 1"))
     return jsonify({
         "status": "ok",
         "message": "Backend is awake"
@@ -178,7 +182,13 @@ class login(Resource):
         email = data.get("email")
         password = data.get("password")
 
-        user = UserModel.query.filter_by(email=email).first()
+        try:
+            user = UserModel.query.filter_by(email=email).first()
+        except OperationalError as e:
+            print("Database connection error:", e)
+            user = UserModel.query.filter_by(email=email).first()
+            raise
+
         if not user or not bcrypt.check_password_hash(user.password, password):
             abort(401, message="Invalid email or password")
         
