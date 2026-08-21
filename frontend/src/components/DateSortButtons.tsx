@@ -57,7 +57,7 @@ const DateSortButtons: React.FC<DateSortButtonsProps> = ({ onDateSelectionChange
         });
 
         setYearMonthMap(sortedMap);
-    }, [onDateSelectionChange, transactions])
+    }, [transactions])
 
     const handleClick = (month: string) => {
         setChosenOption(month);

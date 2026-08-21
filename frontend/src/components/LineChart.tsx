@@ -8,6 +8,7 @@ type LineChartProps = {
     filter: FilterType;
     width: number;
     height: number;
+    selectedMonth: string;
 };
 
 const monthMap: Record<string, number> = {
@@ -25,99 +26,149 @@ const monthMap: Record<string, number> = {
     December: 11,
 };
 
-const LineChart: React.FC<LineChartProps> = ({ transactions, filter, width, height }) => {
+const LineChart: React.FC<LineChartProps> = ({ transactions, filter, width, height, selectedMonth }) => {
     const [yearMonthMap, setYearMonthMap] = useState<string[]>([]);
     const [monthlySpending, setMonthlySpending] = useState<number[]>([]);
     const [monthlyEarnings, setMonthlyEarnings] = useState<number[]>([]);
     const [monthlySavings, setMonthlySavings] = useState<number[]>([]);
     const [monthlyInvesting, setMonthlyInvesting] = useState<number[]>([]);
 
-    // returns a sorted array of transaction amounts based on the month and year
-    function sortTransactionsByDate(tempRecord: Record<string, number>): number[] {
-        const sortedArr: string[] = (Object.keys(tempRecord).sort((a, b) => {
-            const [monthA, yearA] = a.split(" ");
-            const [monthB, yearB] = b.split(" ");
-            if (Number(yearA) === Number(yearB)) {
-                return monthMap[monthA] - monthMap[monthB];
-            }
-            return Number(yearA) - Number(yearB);
-        }));
-        return sortedArr.filter(date => tempRecord[date] !== undefined).map(date => tempRecord[date]);
-    }
-
     useEffect(() => {
-        let tempMap: Record<string, Set<string>> = {};
-        let tempSpending: Record<string, number> = {};
-        let tempEarnings: Record<string, number> = {};
-        let tempSavings: Record<string, number> = {};
-        let tempInvesting: Record<string, number> = {};
+        const tempSpending: Record<string, number> = {};
+        const tempEarnings: Record<string, number> = {};
+        const tempSavings: Record<string, number> = {};
+        const tempInvesting: Record<string, number> = {};
 
-        // get all unique transaction dates
-        transactions.forEach(e => {
-            let dateObject = new Date(e.date);
+        let months: string[] = [];
 
-            let monthName = dateObject.toLocaleString('default', { month: 'long' });
-            let year = dateObject.getFullYear();
-
-            let fullDate = `${monthName} ${year}`;
-
-            if (!tempMap[year]) {
-                tempMap[year] = new Set();
-            }
-            tempMap[year].add(fullDate);
-
-            if (!tempSpending[fullDate]) {
-                tempSpending[fullDate] = 0;
-            }
-            if (!tempSavings[fullDate]) {
-                tempSavings[fullDate] = 0;
-            }
-            if (!tempEarnings[fullDate]) {
-                tempEarnings[fullDate] = 0;
-            }
-            if (!tempInvesting[fullDate]) {
-                tempInvesting[fullDate] = 0;
+        // Show all months: use the 12 most recent months
+        if (selectedMonth === "") {
+            if (transactions.length === 0) {
+                return;
             }
 
-            const hasFilter = (filter.transactionType === 'All' || e.transactionType === filter.transactionType) &&
-                (filter.transactionCategory === 'All' || e.transactionCategory === filter.transactionCategory) &&
-                (filter.categoryType === 'All' || e.categoryType === filter.categoryType) &&
-                (filter.subCategoryType === 'All' || e.subCategoryType === filter.subCategoryType);
-            if (hasFilter) {
-                if (e.transactionType === "Expense") {
-                    tempSpending[fullDate] += e.amount;
-                } else if (e.transactionType === "Savings") {
-                    tempSavings[fullDate] += e.amount;
-                } else if (e.transactionType === "Income") {
-                    tempEarnings[fullDate] += e.amount;
-                } else if (e.transactionType === "Investing") {
-                    tempInvesting[fullDate] += e.amount;
-                }
+            // Find the most recent transaction date
+            const mostRecentDate = transactions.reduce((latest, transaction) => {
+                const transactionDate = new Date(transaction.date);
+
+                return transactionDate > latest ? transactionDate : latest;
+            }, new Date(transactions[0].date));
+
+            // Generate the 12 months ending with the most recent transaction
+            for (let i = 11; i >= 0; i--) {
+                const date = new Date(
+                    mostRecentDate.getFullYear(),
+                    mostRecentDate.getMonth() - i,
+                    1
+                );
+
+                const monthName = date.toLocaleString("default", {
+                    month: "long",
+                });
+
+                const year = date.getFullYear();
+
+                months.push(`${monthName} ${year}`);
             }
-        })
+        }
 
-        setMonthlyEarnings(sortTransactionsByDate(tempEarnings).slice(-12).slice(-12));
-        setMonthlySavings(sortTransactionsByDate(tempSavings).slice(-12));
-        setMonthlySpending(sortTransactionsByDate(tempSpending).slice(-12));
-        setMonthlyInvesting(sortTransactionsByDate(tempInvesting).slice(-12));
+        // A specific year was selected
+        else if (/^\d{4}$/.test(selectedMonth)) {
+            const selectedYear = Number(selectedMonth);
 
-        // convert months to sorted object
-        const sortedMap: Record<string, string[]> = {};
-        const sortedYears = Object.keys(tempMap).sort((a, b) => Number(b) - Number(a));
+            for (let month = 0; month < 12; month++) {
+                const date = new Date(selectedYear, month, 1);
 
-        sortedYears.forEach((year) => {
-            const sortedMonths = Array.from(tempMap[year]).sort((a, b) => {
-                const [monthA] = a.split(" ");
-                const [monthB] = b.split(" ");
-                return monthMap[monthA] - monthMap[monthB];
-            });
-            sortedMap[year] = sortedMonths;
+                const monthName = date.toLocaleString("default", {
+                    month: "long",
+                });
+
+                months.push(`${monthName} ${selectedYear}`);
+            }
+        }
+
+        // A specific month was selected, e.g. "August 2026"
+        else {
+            const [selectedMonthName, selectedYearString] =
+                selectedMonth.split(" ");
+
+            const selectedYear = Number(selectedYearString);
+            const selectedMonthNumber = monthMap[selectedMonthName];
+
+            for (let i = 11; i >= 0; i--) {
+                const date = new Date(
+                    selectedYear,
+                    selectedMonthNumber - i,
+                    1
+                );
+
+                const monthName = date.toLocaleString("default", {
+                    month: "long",
+                });
+
+                const year = date.getFullYear();
+
+                months.push(`${monthName} ${year}`);
+            }
+        }
+
+        // Initialize every month to 0
+        months.forEach((month) => {
+            tempSpending[month] = 0;
+            tempEarnings[month] = 0;
+            tempSavings[month] = 0;
+            tempInvesting[month] = 0;
         });
 
-        const allMonths = Object.values(sortedMap).flat();
+        // Process transactions
+        transactions.forEach((e) => {
+            const dateObject = new Date(e.date);
 
-        setYearMonthMap(allMonths.slice(-12));
-    }, [transactions, filter])
+            const monthName = dateObject.toLocaleString("default", {
+                month: "long",
+            });
+
+            const year = dateObject.getFullYear();
+
+            const fullDate = `${monthName} ${year}`;
+
+            // Ignore transactions outside the displayed months
+            if (!months.includes(fullDate)) {
+                return;
+            }
+
+            const hasFilter =
+                (filter.transactionType === "All" ||
+                    e.transactionType === filter.transactionType) &&
+                (filter.transactionCategory === "All" ||
+                    e.transactionCategory === filter.transactionCategory) &&
+                (filter.categoryType === "All" ||
+                    e.categoryType === filter.categoryType) &&
+                (filter.subCategoryType === "All" ||
+                    e.subCategoryType === filter.subCategoryType);
+
+            if (!hasFilter) {
+                return;
+            }
+
+            if (e.transactionType === "Expense") {
+                tempSpending[fullDate] += e.amount;
+            } else if (e.transactionType === "Savings") {
+                tempSavings[fullDate] += e.amount;
+            } else if (e.transactionType === "Income") {
+                tempEarnings[fullDate] += e.amount;
+            } else if (e.transactionType === "Investing") {
+                tempInvesting[fullDate] += e.amount;
+            }
+        });
+
+        setYearMonthMap(months);
+        setMonthlySpending(months.map((month) => tempSpending[month]));
+        setMonthlyEarnings(months.map((month) => tempEarnings[month]));
+        setMonthlySavings(months.map((month) => tempSavings[month]));
+        setMonthlyInvesting(months.map((month) => tempInvesting[month]));
+
+    }, [transactions, filter, selectedMonth]);
 
     return (
         <div className='line-chart'>

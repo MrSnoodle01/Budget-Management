@@ -138,7 +138,7 @@ export default function LoginPage({ API_URL, setLoggedIn }: LoginPageProps) {
                         Total: ${(parseFloat((needs).toFixed(2)) + parseFloat((wants).toFixed(2)) + parseFloat((savings).toFixed(2))).toFixed(2)} <br />
                         Extra: ${parseFloat(((income - needs - wants - savings)).toFixed(2))}<br />
                     </p>
-                    <LineChart transactions={tempData} filter={filter} width={screenWidth * .35} height={screenHeight * .35} />
+                    <LineChart transactions={tempData} filter={filter} width={screenWidth * .35} height={screenHeight * .35} selectedMonth="July 2025" />
                 </div>
             </div>
         </div>
