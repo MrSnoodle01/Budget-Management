@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { PieChart, pieArcLabelClasses } from '@mui/x-charts';
 import LineChart from "../components/LineChart";
@@ -23,6 +23,7 @@ const filter: FilterType = {
 export default function LoginPage({ API_URL, setLoggedIn }: LoginPageProps) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [rememberEmail, setRememberEmail] = useState(false);
     const navigate = useNavigate();
 
     const screenWidth: number = window.innerWidth;
@@ -31,6 +32,15 @@ export default function LoginPage({ API_URL, setLoggedIn }: LoginPageProps) {
     const needs = 2190.29;
     const wants = 1329.95;
     const savings = 890.00;
+
+    useEffect(() => {
+        const savedEmail = localStorage.getItem("rememberedEmail");
+
+        if (savedEmail) {
+            setEmail(savedEmail);
+            setRememberEmail(true);
+        }
+    }, []);
 
     async function handleLogin(e: React.FormEvent) {
         e.preventDefault();
@@ -53,6 +63,12 @@ export default function LoginPage({ API_URL, setLoggedIn }: LoginPageProps) {
         const data = await res.json();
         if (data.access_token) {
             localStorage.setItem("token", data.access_token);
+
+            if (rememberEmail) {
+                localStorage.setItem("rememberedEmail", email);
+            } else {
+                localStorage.removeItem("remembredEmail");
+            }
             setLoggedIn(true);
             navigate("/");
         }
@@ -89,6 +105,17 @@ export default function LoginPage({ API_URL, setLoggedIn }: LoginPageProps) {
                             className="login-input"
                             required
                         />
+                        <div className="remember-email">
+                            <input
+                                type="checkbox"
+                                id="remember-email"
+                                checked={rememberEmail}
+                                onChange={(e) => setRememberEmail(e.target.checked)}
+                            />
+                            <label htmlFor="remember-email">
+                                Remember email
+                            </label>
+                        </div>
                         <button type="submit" className="login-button">
                             Log In
                         </button>
@@ -138,7 +165,7 @@ export default function LoginPage({ API_URL, setLoggedIn }: LoginPageProps) {
                         Total: ${(parseFloat((needs).toFixed(2)) + parseFloat((wants).toFixed(2)) + parseFloat((savings).toFixed(2))).toFixed(2)} <br />
                         Extra: ${parseFloat(((income - needs - wants - savings)).toFixed(2))}<br />
                     </p>
-                    <LineChart transactions={tempData} filter={filter} width={screenWidth * .35} height={screenHeight * .35} />
+                    <LineChart transactions={tempData} filter={filter} width={screenWidth * .35} height={screenHeight * .35} selectedMonth="July 2025" />
                 </div>
             </div>
         </div>

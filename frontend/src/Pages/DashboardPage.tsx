@@ -75,7 +75,7 @@ export default function dashboardPage({ API_URL, onLogout }: DashboardPageProps)
                 </div>
                 <div className='middle-section'>
                     <DisplayTransactions dateSelection={dateSelection} transactions={transactions} filter={filter} onChangeTransaction={setTransactions} />
-                    <LineChart transactions={transactions} filter={filter} width={screenWidth / 1.75} height={screenHeight / 3} />
+                    <LineChart transactions={transactions} filter={filter} width={screenWidth / 1.75} height={screenHeight / 3} selectedMonth={dateSelection} />
                 </div>
                 <div className="right-section">
                     <Graphs dateSelection={dateSelection} transactions={transactions} filter={filter} />
